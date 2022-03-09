@@ -9,7 +9,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 #security = HTTPBasic()
 
-@app.get("/", response_class=HTMLResponse)
+@app.get("/", response_class=HTMLResponse, include_in_schema=False)
 def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
