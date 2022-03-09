@@ -1,0 +1,15 @@
+.secondary-h1-header {
+  margin: 0;
+  padding-left:0;
+}
+
+.app-hero {
+  background-color:rgb(241,241,241);
+}
+.app-hero h1 {
+  color:#aa1111;
+}
+
+.app-hero img {
+  margin-top:40px;
+}
