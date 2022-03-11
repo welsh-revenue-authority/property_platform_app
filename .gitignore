@@ -17,3 +17,6 @@ share/
 
 # Test directories
 tests/
+
+# Caching and IDEs
+*__pycache__*
