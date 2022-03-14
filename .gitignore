@@ -17,6 +17,7 @@ share/
 
 # Test directories
 tests/
+*scratch.py
 
 # Caching and IDEs
 *__pycache__*

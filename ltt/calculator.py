@@ -6,6 +6,7 @@ from datetime import date
 from typing import Dict, Optional, Union
 from os import wait
 from ltt.db_connections import sql_query
+from ltt.data_object_models import Attributes
 
 
 SCHEDULES = [
@@ -13,13 +14,13 @@ SCHEDULES = [
     "rates_higher_residential",
     "rates_higher_plus_residential",
 ]
-SCHEDULE_ATTRIBUTES = ["second_home", "buy-to-let"]
+SCHEDULE_ATTRIBUTES = ["second_home", "buy_to_let"]
 
 
 def calculate_tax(
     address: str,
     value: int,
-    attributes: Optional[Dict[str, Union[int, float, bool, str]]] = {},
+    attributes: Optional[Attributes],
     use_polygon: bool = False,
 ) -> float:
     """
@@ -70,7 +71,7 @@ def calculate_tax(
         - tax, rounded to nearest penny
     """
     # Determine schedule
-    schedule = _determine_schedule(attributes)
+    schedule = _determine_schedule(attributes) if attributes else SCHEDULES[0]
 
     # Determine tax zone and apply rate
     if use_polygon:
@@ -78,13 +79,13 @@ def calculate_tax(
     else:
         tax_zones = tax_zone_lookup(address)
 
-    # Apply rate from schedule
     tax = _apply_schedule(schedule, tax_zones, value)
 
     # Modify rate based on attributed declared
-    for attribute, atr_value in attributes.items():
-        if attribute not in SCHEDULE_ATTRIBUTES:
-            tax = _modify_rate(tax, attribute, atr_value)
+    if attributes:
+        for attribute, attr_value in attributes:
+            if attribute not in SCHEDULE_ATTRIBUTES:
+                tax = _modify_rate(tax, attribute, attr_value)
 
     # Round to nearest penny and return
     tax = round(tax, 2)
@@ -92,7 +93,7 @@ def calculate_tax(
 
 
 def _determine_schedule(
-    attributes: Optional[Dict[str, Union[int, float, bool, str]]] = {},
+    attributes: Attributes,
 ) -> str:
     """Returns the schedule (by table name) to be used."""
     # Set the default schedule index as 0 (corresponds to
@@ -100,11 +101,11 @@ def _determine_schedule(
     schedule_idx = 0
 
     # Loop through the attributes which are relevant to schedule assignment
-    for attribute, atr_value in attributes.items():
+    for attribute, atr_value in attributes:
         if attribute in SCHEDULE_ATTRIBUTES and atr_value is True:
 
-            # Check the minimum schedule for a property with that attribute and
-            # update if higher that the current assigned schedule index
+            # Check the minimum schedule for a property with that attribute
+            # and update if higher that the current assigned schedule index
             # Note: atr_value must be int as this is how it is stored in
             # attribute_rules table so it can share with other attribute
             # modification values.
@@ -115,7 +116,7 @@ def _determine_schedule(
     return SCHEDULES[schedule_idx]
 
 
-def _min_schedule_idx(attribute: Union[bool, int], atr_value: float) -> int:
+def _min_schedule_idx(attribute: str, atr_value: int) -> int:
     """
     Returns the minimum schedule to be applied if the given attribute is
     True in terms of the index of SCHEDULES.
@@ -178,6 +179,8 @@ def _modify_rate(
     tax: float, attribute: str, atr_value: Union[int, float, bool, str]
 ) -> float:
     """Returns modified tax based on value of attribute"""
+    if atr_value is None:
+        return tax
     # Get method and value
     query = f"""
         SELECT method, modification_value
@@ -272,4 +275,3 @@ def tax_zone_lookup_polygon(address: str) -> Dict[str, float]:
         raise AttributeError("Address not in database")
 
     return tax_zone_proportions
-
