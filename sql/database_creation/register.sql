@@ -1,4 +1,4 @@
--- Creation script for whole fictional database
+-- Creation script for register fictional schema
 CREATE EXTENSION IF NOT EXISTS postgis;
 
 -- User groups
@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS register.properties (
 CREATE TABLE IF NOT EXISTS register.attribute_types (
     attribute_type TEXT UNIQUE,
     description TEXT,
+    data_type TEXT CHECK (data_type = 'bool' OR data_type = 'text' OR data_type = 'numeric'),
     PRIMARY KEY (attribute_type)
 );
 
@@ -31,7 +32,7 @@ CREATE TABLE IF NOT EXISTS register.attributes (
     text_value TEXT,
     numeric_value NUMERIC,
     valid_from DATE NOT NULL,
-    valid_to DATE DEFAULT '9999-01-01',
+    valid_to DATE DEFAULT '9999-01-01' CHECK (valid_to > valid_from),
     PRIMARY KEY (wra_attribute_id),
     FOREIGN KEY (wra_property_id) REFERENCES register.properties (wra_property_id),
     FOREIGN KEY (attribute_type) REFERENCES register.attribute_types (attribute_type)
