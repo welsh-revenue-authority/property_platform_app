@@ -52,3 +52,49 @@ def test_api(property_info: Union[PropertyInfo, List[PropertyInfo]]):
         taxes.append(tax)
 
     return taxes
+
+
+@app.post("/sold_price")
+def sold_price():
+    """
+    Returns information on last sold price. May return multiple results as WRA
+    get this info instantly on transaction but land registry have a lag of
+    several weeks (return both?).
+
+    User groups: estate agenst, public
+    """
+    return {"status": "API not yet available"}
+
+
+@app.post("/property_info")
+def property_info():
+    """
+    Given an identifier, property information is returned. Some user groups may
+    get access to all property data and some a restricted set.
+
+    User groups: local authorities (full access), public (restricted access)
+    """
+    return {"status": "API not yet available"}
+
+
+@app.post("/property_tax_band")
+def property_tax_band():
+    """
+    Given an identifier, the properties tax band is returned. Restricted 
+    access.
+
+    User groups: local authorities
+    """
+    return {"status": "API not yet available"}
+
+
+@app.post("/tax_zone")
+def tax_zone():
+    """
+    Given a property identifier, the tax zone in which the property resides is
+    returned.
+
+    User groups: all
+    """
+    return {"status": "API not yet available"}
+
