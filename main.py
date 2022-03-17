@@ -23,7 +23,7 @@ def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 #About the data page
-@app.get("/understand-the-data", response_class=HTMLResponse, include_in_schema=False)
+@app.get("/about-the-platform", response_class=HTMLResponse, include_in_schema=False)
 def index(request: Request):
     return templates.TemplateResponse("datasets.html", {"request": request})
 
