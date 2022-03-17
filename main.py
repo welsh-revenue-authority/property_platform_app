@@ -11,7 +11,7 @@ from ltt.data_object_models import PropertyInfo, Attributes
 
 
 # App instantiation and setup
-app = FastAPI()
+app = FastAPI(title="Land and property tax platform")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 # security = HTTPBasic()
