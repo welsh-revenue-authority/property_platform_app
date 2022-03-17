@@ -16,7 +16,6 @@ SCHEDULES = [
 ]
 SCHEDULE_ATTRIBUTES = ["second_home", "buy_to_let"]
 
-
 def calculate_tax(
     address: str,
     value: int,
@@ -28,13 +27,13 @@ def calculate_tax(
 
     Parameter:
         - address: the address of the property written as exact string, no
-          addresss parser is used.
+          address parser is used.
         - value: the property value against which to calculate tax
         - attributes: dictionary of declarative attributes which have
           associated tax rules in "attribute", "value" format. All available
           attributed are in the attribute_rules table, are listed below and
-          can be grouped into 3 strategies (that could ahve more attributes
-          added at a later date (behaviour when there are multiple attributes
+          can be grouped into 3 strategies (that could have more attributes
+          added at a later date (behavior when there are multiple attributes
           in the same strategy are not yet implemented):
 
           Schedule determining attributes:
