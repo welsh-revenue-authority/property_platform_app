@@ -344,11 +344,11 @@ INSERT INTO register.properties(address) VALUES
     ('175, Glyndŵr Bank, Cwmderi'),
     ('164, Mountain Court, Cwmderi');
 
-INSERT INTO register.attribute_types(attribute_type, description) VALUES
-    ('second_home', 'The property is recognised as a second home'),
-    ('buy_to_let', 'The property is recognised as a buy to let property'),
-    ('attribute_a', 'Example of a multiplyer attribute'),
-    ('attribute_b', 'Example of a fixed amount add attribute');
+INSERT INTO register.attribute_types(attribute_type, description, data_type) VALUES
+    ('second_home', 'The property is recognised as a second home', 'bool'),
+    ('buy_to_let', 'The property is recognised as a buy to let property', 'bool'),
+    ('attribute_a', 'Example of a multiplyer attribute', 'numeric'),
+    ('attribute_b', 'Example of a fixed amount add attribute', 'numeric');
 
 INSERT INTO register.points(uprn, wra_property_id, geom)
     SELECT uprn, wra_property_id, wkb_geometry
