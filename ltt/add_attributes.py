@@ -33,13 +33,18 @@ def _add_attribute(attribute: Attribute, debug: Optional[bool] = False):
         # If attribute exists and values are the same, change nothing but
         # inform user
         if existing_attribute:
-            if attribute.attribute_type == existing_attribute.attribute_type and attribute.value == existing_attribute.value:
-                print("Attribute for property already exists. No records changed")
+            if (
+                attribute.attribute_type == existing_attribute.attribute_type
+                and attribute.value == existing_attribute.value
+            ):
+                print(
+                    "Attribute for property already exists. No records changed"
+                )
                 return
 
-        # If value is different close old attribute (valid_to_date yesterday)
-        # and make new attribute
-        # Todo: combine the 2 command below into one transaction
+            # If value is different close old attribute (valid_to_date yesterday)
+            # and make new attribute
+            # Todo: combine the 2 command below into one transaction
             _close_attribute(existing_attribute)
         _add_new_attribute(attribute, debug=debug)
 
