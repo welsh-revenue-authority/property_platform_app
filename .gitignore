@@ -21,3 +21,7 @@ tests/
 
 # Caching and IDEs
 *__pycache__*
+
+# Mkdocs site
+site/
+
