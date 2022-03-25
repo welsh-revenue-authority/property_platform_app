@@ -6,7 +6,7 @@ level
 """
 
 import datetime
-from typing import Union, Optional
+from typing import Union, Optional, Any
 from pydantic import BaseModel
 
 
@@ -34,3 +34,15 @@ class Attribute(BaseModel):
     numeric_value: Optional[Union[int, float]] = None
     valid_from: Optional[str] = str(datetime.date.today())
     valid_to: Optional[str] = None
+    wra_attribute_id: Optional[int] = None
+
+    @property
+    def value(self) -> Any:
+        if self.bool_value:
+            return self.bool_value
+        elif self.text_value:
+            return self.text_value
+        elif self.numeric_value:
+            return self.numeric_value
+        else:
+            return
