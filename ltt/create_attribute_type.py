@@ -1,5 +1,5 @@
-import argparse
 from ltt.db_connections import sql_command
+
 
 def create_attribute(attribute_type: str, description: str, data_type: str):
     """Adds a new attribute type to data base"""
@@ -9,7 +9,7 @@ def create_attribute(attribute_type: str, description: str, data_type: str):
     """
     print(query)
     sql_command(query)
-    
+
     print(f"new attribute '{attribute_type}' added to database")
 
 
