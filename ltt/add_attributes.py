@@ -94,7 +94,7 @@ def _close_attribute(
     sql_command(
         f"""
         UPDATE register.attributes 
-        SET valid_to = CURRENT_DATE - 1
+        SET valid_to = CURRENT_DATE
         WHERE wra_property_id = {attribute.wra_property_id}
         AND attribute_type = '{attribute.attribute_type}';
     """
@@ -134,13 +134,13 @@ def _attribute_type_exists(attribute_type: str) -> bool:
 def _fields_list(attribute: Attribute) -> str:
     field_list = []
     for field_name, field_value in {
-            "wra_property_id": attribute.wra_property_id,
-            "attribute_type": attribute.attribute_type,
-            "bool_value": attribute.bool_value,
-            "text_value": attribute.text_value,
-            "numeric_value": attribute.numeric_value,
-            "valid_from": attribute.valid_from,
-            "valid_to": attribute.valid_to,
+        "wra_property_id": attribute.wra_property_id,
+        "attribute_type": attribute.attribute_type,
+        "bool_value": attribute.bool_value,
+        "text_value": attribute.text_value,
+        "numeric_value": attribute.numeric_value,
+        "valid_from": attribute.valid_from,
+        "valid_to": attribute.valid_to,
     }.items():
         if field_value:
             # Get variable name (which is the actual name of the field)
