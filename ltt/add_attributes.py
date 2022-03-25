@@ -28,21 +28,18 @@ def add_attribute(
 
 def _add_attribute(attribute: Attribute, debug: Optional[bool] = False):
     if _attribute_type_exists(attribute.attribute_type):
+        existing_attribute = _get_attribute(attribute)
 
         # If attribute exists and values are the same, change nothing but
         # inform user
-        existing_attribute = _get_attribute(attribute)
-        print(existing_attribute)
-        print(attribute)
-        print(existing_attribute == attribute)
-        if attribute == existing_attribute:
-            print("Attribute for property already exists. No records changed")
-            return
+        if existing_attribute:
+            if attribute.attribute_type == existing_attribute.attribute_type and attribute.value == existing_attribute.value:
+                print("Attribute for property already exists. No records changed")
+                return
 
         # If value is different close old attribute (valid_to_date yesterday)
         # and make new attribute
         # Todo: combine the 2 command below into one transaction
-        if existing_attribute:
             _close_attribute(existing_attribute)
         _add_new_attribute(attribute, debug=debug)
 
@@ -71,7 +68,6 @@ def _get_attribute(attribute: Attribute) -> Optional[Attribute]:
     """
     )
     # Deal with qery returing []
-    print(result)
     if result:
         result = result[0]
     else:
