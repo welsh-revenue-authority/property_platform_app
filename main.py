@@ -7,7 +7,12 @@ from fastapi.templating import Jinja2Templates
 
 # from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from ltt.calculator import calculate_tax
-from ltt.data_object_models import PropertyInfo, Attributes
+from ltt.data_object_models import (
+    PropertyInfo,
+    Attributes,
+    PropertyInfoRequest,
+)
+from ltt.property_info import get_property_info
 
 
 # App instantiation and setup
@@ -22,8 +27,11 @@ templates = Jinja2Templates(directory="templates")
 def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-#About the data page
-@app.get("/about-the-platform", response_class=HTMLResponse, include_in_schema=False)
+
+# About the data page
+@app.get(
+    "/about-the-platform", response_class=HTMLResponse, include_in_schema=False
+)
 def index(request: Request):
     return templates.TemplateResponse("datasets.html", {"request": request})
 
@@ -72,20 +80,31 @@ def sold_price():
 
 
 @app.post("/property_info")
-def property_info():
+def property_info(property_info_request: PropertyInfoRequest):
     """
     Given an identifier, property information is returned. Some user groups may
     get access to all property data and some a restricted set.
 
     User groups: local authorities (full access), public (restricted access)
     """
-    return {"status": "API not yet available"}
+    if (
+        not property_info_request.wra_property_id
+        or property_info_request.address
+    ):
+        return {
+            "error": "one from wra_property_id or address must be provided"
+        }
+
+    return get_property_info(
+        wra_property_id=property_info_request.wra_property_id,
+        address=property_info_request.address,
+    )
 
 
 @app.post("/property_tax_band")
 def property_tax_band():
     """
-    Given an identifier, the properties tax band is returned. Restricted 
+    Given an identifier, the properties tax band is returned. Restricted
     access.
 
     User groups: local authorities
@@ -102,4 +121,3 @@ def tax_zone():
     User groups: all
     """
     return {"status": "API not yet available"}
-

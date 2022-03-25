@@ -25,6 +25,11 @@ class PropertyInfo(BaseModel):
     use_polygon: Optional[bool] = None
 
 
+class PropertyInfoRequest(BaseModel):
+    wra_property_id: Optional[int] = None
+    address: Optional[str] = None
+
+
 # Database entity models
 class Attribute(BaseModel):
     wra_property_id: int
