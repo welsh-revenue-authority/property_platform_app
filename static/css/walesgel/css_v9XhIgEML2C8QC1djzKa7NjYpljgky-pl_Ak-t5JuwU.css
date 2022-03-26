@@ -1649,6 +1649,7 @@ p {
   font-size: 20px;
   font-weight: 300;
   line-height: 1.4;
+  color: #ffffff;
 }
 
 @media (min-width: 600px) {
@@ -16942,6 +16943,7 @@ p.lead a {
   font-size: inherit;
   font-weight: normal;
 }
+
 #frm-display-data-on-map {
   border-bottom: 2px solid #e5e5e5;
   padding: 0 10px 10px 10px;
