@@ -4,16 +4,12 @@
 }
 
 .app-hero {
-  background-color:rgb(3,96,166);
+  background-color:rgb(241,241,241);
 }
 .app-hero h1 {
-  color:#ffffff;
+  color:#aa1111;
 }
 
 .app-hero img {
   margin-top:40px;
-}
-
-.nav-link a {
-  color: #00ff00;
 }
