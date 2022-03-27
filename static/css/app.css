@@ -10,6 +10,10 @@
   color:#aa1111;
 }
 
+.app-hero .lead {
+  color:rgb(31,31,31);
+}
+
 .app-hero img {
   margin-top:40px;
 }
