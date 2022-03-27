@@ -22,19 +22,34 @@ templates = Jinja2Templates(directory="templates")
 # security = HTTPBasic()
 
 # Routes
-# Landing page
+
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
 def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-
-# About the data page
-@app.get(
-    "/about-the-platform", response_class=HTMLResponse, include_in_schema=False
-)
+@app.get("/about-the-platform", response_class=HTMLResponse, include_in_schema=False)
 def index(request: Request):
     return templates.TemplateResponse("datasets.html", {"request": request})
 
+@app.get("/roadmap", response_class=HTMLResponse, include_in_schema=False)
+def roadmap(request: Request):
+    return templates.TemplateResponse("roadmap.html", {"request": request})
+
+@app.get("/features", response_class=HTMLResponse, include_in_schema=False)
+def features(request: Request):
+    return templates.TemplateResponse("features.html", {"request": request})
+    
+@app.get("/analysts", response_class=HTMLResponse, include_in_schema=False)
+def analysts(request: Request):
+    return templates.TemplateResponse("analysts.html", {"request": request})
+
+@app.get("/api-docs", response_class=HTMLResponse, include_in_schema=False)
+def apidocs(request: Request):
+    return templates.TemplateResponse("apidocs.html", {"request": request})
+
+@app.get("/pricing", response_class=HTMLResponse, include_in_schema=False)
+def pricing(request: Request):
+    return templates.TemplateResponse("pricing.html", {"request": request})
 
 # Test get API
 @app.get("/api")
