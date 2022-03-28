@@ -50,9 +50,9 @@ def apidocs(request: Request):
     return templates.TemplateResponse("apidocs.html", {"request": request})
 
 
-@app.get("/pricing", response_class=HTMLResponse, include_in_schema=False)
+@app.get("/getting-started", response_class=HTMLResponse, include_in_schema=False)
 def pricing(request: Request):
-    return templates.TemplateResponse("pricing.html", {"request": request})
+    return templates.TemplateResponse("getting-started.html", {"request": request})
 
 
 # Test get API
