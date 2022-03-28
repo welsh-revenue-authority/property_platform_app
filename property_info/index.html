@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Property Information - Land Property Platform</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Property Information";
+        var mkdocs_page_input_path = "property_info.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Land Property Platform
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Property Information</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#example">Example</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#how-to-use">How to Use</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#attributes">Attributes</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#second_home">second_home</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#buy_to_let">buy_to_let</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#attribute_a">attribute_a</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#attribute_b">attribute_b</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Land Property Platform</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li><li>Property Information</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="property-information-api">Property Information API</h1>
+<p>Use this api to get all available information on a property.</p>
+<h2 id="example">Example</h2>
+<p>Request body:</p>
+<pre><code class="language-console">{
+    &quot;address&quot;: &quot;58, Mountain Road, Pontypandy&quot;
+}
+</code></pre>
+<p>Response body:</p>
+<pre><code class="language-console">{
+    &quot;wra_property_id&quot;: 6,
+    &quot;address&quot;: &quot;58, Mountain Road, Pontypandy&quot;,
+    &quot;attributes&quot;: {
+        &quot;attribute_a&quot;: 2,
+        &quot;buy_to_let&quot;: true,
+        &quot;attribute_b&quot;: 3
+    }
+}
+</code></pre>
+<h2 id="how-to-use">How to Use</h2>
+<p>This is a REST API. Send a post request to url: 
+<a href="https://land-property-platform.herokuapp.com/property_info">https://land-property-platform.herokuapp.com/property_info</a>
+with a JSON body with either an <strong>address</strong> field or a <strong>wra_property_id</strong> field.</p>
+<p>A respose with all available information on the property will be returned. <em>Note
+that this is for illustrative purposes and will return fake data. Future API 
+calls that return real data mak require security clearance.</em></p>
+<p>Response shcema:</p>
+<pre><code class="language-console">{
+    # Property identifiers (request will have identified one of these)
+    &quot;wra_property_id&quot;: integer,
+    &quot;address&quot;: string,
+    # Property attributes
+    &quot;attributes&quot;: {
+        &quot;attribute&quot;: attribite value,
+        ... : ...
+    }
+}
+</code></pre>
+<h2 id="attributes">Attributes</h2>
+<p>Attributes contain the know information on the property.</p>
+<h3 id="second_home">second_home</h3>
+<p><strong>Attribute name:</strong> "second_home"<br>
+<strong>Possible values:</strong> true, false<br>
+<strong>Description:</strong> If true, the property is not a main residence.<br></p>
+<h3 id="buy_to_let">buy_to_let</h3>
+<p><strong>Attribute name:</strong> "buy_to_let"<br>
+<strong>Possible values:</strong> true, false<br>
+<strong>Description:</strong> If true, the property is considered a buy-to-let property. 
+Note that a property is not identified as a second home if it is a buy-to-let
+property.<br></p>
+<h3 id="attribute_a">attribute_a</h3>
+<p><strong>Attribute name:</strong> "attribute_a"<br>
+<strong>Possible values:</strong> 1, 2<br>
+<strong>Description:</strong> A placeholder attribute which can hold integer values and has
+a multiplier effect on LLT.<br></p>
+<h3 id="attribute_b">attribute_b</h3>
+<p><strong>Attribute name:</strong> "attribute_b"<br>
+<strong>Possible values:</strong> 1, 2, 3<br>
+<strong>Description:</strong> A placeholder attribute which can hold integer values and has
+a fixed addition effect on LLT.<br></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
