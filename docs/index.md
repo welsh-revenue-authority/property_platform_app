@@ -1,17 +1,19 @@
-# Welcome to MkDocs
+# Welcome to Documentation for the Land Property Platform for Wales
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+This is the documentaion for the proof-of-concept API calls.
 
-## Commands
+To see how the platform might look, head to 
+[land-property-platform.herokuapp.com](https://land-property-platform.herokuapp.com).
+Use these pages for reference on the PoC APIs if you are developing them 
+further.
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+__\*\*All data is fake\*\*__<br>
+__\*\*Not all future functionality is included\*\*__
 
-## Project layout
+## Available APIs
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+* Localised land transaction tax calculator at 
+[https://land-property-platform.herokuapp.com/LTT_tax](https://land-property-platform.herokuapp.com/LTT_tax)
+* Property information at 
+[https://land-property-platform.herokuapp.com/property_info](https://land-property-platform.herokuapp.com/property_info)
+
