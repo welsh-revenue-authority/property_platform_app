@@ -22,7 +22,7 @@
   color: #00ff00;
 }
 
-.platform-menu a {
-  color:white; 
+#platform-menu a {
+  color:white;
   padding: 0em 1em 0em 0em;
 }
