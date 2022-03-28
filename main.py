@@ -104,7 +104,7 @@ def property_info(property_info_request: PropertyInfoRequest):
     """
     if (
         not property_info_request.wra_property_id
-        or property_info_request.address
+        or not property_info_request.address
     ):
         return {
             "error": "one from wra_property_id or address must be provided"

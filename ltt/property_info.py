@@ -98,7 +98,3 @@ def _get_property_info_from_address(address: str) -> Optional[Dict[str, Any]]:
 
     return property_info
 
-
-from pprint import pprint
-
-pprint(get_property_info(address="58, Mountain Road, Pontypandy"))
