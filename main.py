@@ -7,11 +7,7 @@ from fastapi.templating import Jinja2Templates
 
 # from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from ltt.calculator import calculate_tax
-from ltt.data_object_models import (
-    PropertyInfo,
-    Attributes,
-    PropertyInfoRequest,
-)
+from ltt.data_object_models import PropertyInfo, PropertyInfoRequest
 from ltt.property_info import get_property_info
 
 
@@ -22,34 +18,42 @@ templates = Jinja2Templates(directory="templates")
 # security = HTTPBasic()
 
 # Routes
-
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
 def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-@app.get("/about-the-platform", response_class=HTMLResponse, include_in_schema=False)
+
+@app.get(
+    "/about-the-platform", response_class=HTMLResponse, include_in_schema=False
+)
 def index(request: Request):
     return templates.TemplateResponse("datasets.html", {"request": request})
+
 
 @app.get("/roadmap", response_class=HTMLResponse, include_in_schema=False)
 def roadmap(request: Request):
     return templates.TemplateResponse("roadmap.html", {"request": request})
 
+
 @app.get("/features", response_class=HTMLResponse, include_in_schema=False)
 def features(request: Request):
     return templates.TemplateResponse("features.html", {"request": request})
-    
+
+
 @app.get("/analysts", response_class=HTMLResponse, include_in_schema=False)
 def analysts(request: Request):
     return templates.TemplateResponse("analysts.html", {"request": request})
+
 
 @app.get("/api-docs", response_class=HTMLResponse, include_in_schema=False)
 def apidocs(request: Request):
     return templates.TemplateResponse("apidocs.html", {"request": request})
 
+
 @app.get("/getting-started", response_class=HTMLResponse, include_in_schema=False)
 def pricing(request: Request):
     return templates.TemplateResponse("getting-started.html", {"request": request})
+
 
 # Test get API
 @app.get("/api")
@@ -104,7 +108,7 @@ def property_info(property_info_request: PropertyInfoRequest):
     """
     if (
         not property_info_request.wra_property_id
-        or property_info_request.address
+        or not property_info_request.address
     ):
         return {
             "error": "one from wra_property_id or address must be provided"
