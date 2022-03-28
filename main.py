@@ -34,6 +34,10 @@ def index(request: Request):
 def roadmap(request: Request):
     return templates.TemplateResponse("roadmap.html", {"request": request})
 
+@app.get("/datasets", response_class=HTMLResponse, include_in_schema=False)
+def datasets(request: Request):
+    return templates.TemplateResponse("datasets.html", {"request": request})
+
 
 @app.get("/features", response_class=HTMLResponse, include_in_schema=False)
 def features(request: Request):
