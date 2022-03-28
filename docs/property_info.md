@@ -49,25 +49,25 @@ Response shcema:
 ## Attributes
 Attributes contain the know information on the property.
 
-### second_home
+### Second home
 __Attribute name:__ "second_home"<br>
 __Possible values:__ true, false<br>
 __Description:__ If true, the property is not a main residence.<br>
 
-### buy_to_let
+### Buy_to_let
 __Attribute name:__ "buy_to_let"<br>
 __Possible values:__ true, false<br>
 __Description:__ If true, the property is considered a buy-to-let property. 
 Note that a property is not identified as a second home if it is a buy-to-let
 property.<br>
 
-### attribute_a
+### Attribute a
 __Attribute name:__ "attribute_a"<br>
 __Possible values:__ 1, 2<br>
 __Description:__ A placeholder attribute which can hold integer values and has
 a multiplier effect on LLT.<br>
 
-### attribute_b
+### Attribute b
 __Attribute name:__ "attribute_b"<br>
 __Possible values:__ 1, 2, 3<br>
 __Description:__ A placeholder attribute which can hold integer values and has
