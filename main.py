@@ -106,9 +106,9 @@ def property_info(property_info_request: PropertyInfoRequest):
 
     User groups: local authorities (full access), public (restricted access)
     """
-    if (
-        not property_info_request.wra_property_id
-        or not property_info_request.address
+    if not (
+        property_info_request.wra_property_id
+        or property_info_request.address
     ):
         return {
             "error": "one from wra_property_id or address must be provided"
