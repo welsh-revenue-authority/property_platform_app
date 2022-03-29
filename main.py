@@ -1,6 +1,5 @@
-from typing import Union, Optional, Dict, List
+from typing import Union, List
 from fastapi import FastAPI, Request
-from pydantic import BaseModel
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
