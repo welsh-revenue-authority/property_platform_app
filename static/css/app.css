@@ -26,3 +26,16 @@
   color:white;
   padding: 0em 1em 0em 0em;
 }
+
+img {
+  border:solid 1px #ccc;
+  padding:10px;
+  max-width:600px
+}
+.poc-highlight{
+    margin-top:30px;
+}
+.poc-highlight span.btn.btn--beta.btn--light, .poc-highlight span.btn.btn--beta.btn--light:hover {
+  background-color:#ffd530;
+  color:black;
+}

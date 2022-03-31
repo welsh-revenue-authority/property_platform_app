@@ -25,3 +25,4 @@ tests/
 # Mkdocs site
 site/
 
+.DS_Store

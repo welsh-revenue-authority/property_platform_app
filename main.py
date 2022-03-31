@@ -38,6 +38,9 @@ def roadmap(request: Request):
 def datasets(request: Request):
     return templates.TemplateResponse("datasets.html", {"request": request})
 
+@app.get("/poc-data", response_class=HTMLResponse, include_in_schema=False)
+def poc_data(request: Request):
+    return templates.TemplateResponse("poc-data.html", {"request": request})
 
 @app.get("/features", response_class=HTMLResponse, include_in_schema=False)
 def features(request: Request):
