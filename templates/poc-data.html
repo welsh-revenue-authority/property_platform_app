@@ -1,0 +1,50 @@
+{% include "_header.html" %}
+  <div id="main__body" class="main__body container-fluid home">
+    <div class="row">
+      <div class="col-lg-8">
+
+        <p class="poc-highlight">
+          <span class="btn btn--beta btn--light">Proof of concept</span>
+        </p>
+        <h1>Data used in this proof of concept</h1>
+        <p>
+        To make this proof of concept as realistic as possible, without using data about real properties and taxes, we created synthetic data and scenarios.
+        </p>
+        <p>
+          This platform only contains data about three <a href="https://en.wikipedia.org/wiki/Category:Fictional_populated_places_in_Wales">fictional places</a>: 
+          Cwmderi, Pontypandy and Upper Leadworth, which we have located on military or ex-military land.
+          We have used real address identies (UPRNs, postcodes, etc), but <a href="https://github.com/welsh-revenue-authority/property_platform_app/blob/main/sql/inserts/insert_fictional_data_to_register.sql">created fake addresses</a>. 
+        </p>
+        <p>We have also created two hypothetical tax zones: <strong>north  east</strong> and <strong>south west</strong>.
+        </p>
+
+        <h2>Areas covered by fictional places</h2>
+
+        <p>The 'town' of <strong>Cwmderi</strong> is located on the land of MOD Castlemartin. It is fully in the south east tax zone. The UPRNs of all properties in Cwmderi are listed in MOD_Castlemartin__Cwmderi_UPRN.geojson</a>. The <a href="/static/sample-data/MOD_Castlemartin__Cwmderi.geojson">'town boundaries'</a> and the <a href="/static/sample-data/MOD_Castlemartin__Cwmderi_UPRN.geojson">UPRNs of all properties</a> are available as geojson</a>.</p>
+        <p>
+          <img src="/static/images/cwmderi.png" alt="Cwmderi location in the south west of Wales">
+        </p>
+
+        <p>The 'town' of <strong>Pontypandy</strong> is located on the land of ex-RAF Llanbedr. It is split across the north east and south west tax zones. The <a href="/static/sample-data/RAF_Llanbedr__Pontypandy_UPRN.geojson">'town boundaries'</a> and the <a href="/static/sample-data/RAF_Llanbedr__Pontypandy.geojson">UPRNs of all properties</a> are available as geojson</a>.</p>
+        <p><img src="/static/images/pontypandy.png" alt="Pontypandy location near the cost in the middle of Wales"></p>
+
+        <p>The 'town' of Upper Leadworth is located on the land of MOD Sealand. It is fully in the North tax zone and shares a border with England. The <a href="/static/sample-data/MOD_Sealand__Upper_Leadworth_UPRN.geojson">'town boundaries'</a> and the <a href="/static/sample-data/MOD_Sealand__Upper_Leadworth.geojson">UPRNs of all properties</a> are available as geojson</a>.</p>
+        </p>
+        <p><img src="/static/images/upperleadworth.png" alt="Upper Leadworth location in the north east of Wales, bordering England"></p>
+
+        <p>
+          To illustrate certain functions, the platform also has a small about of data about properties outside of Wales. The UPRNs of these are also <a href="/static-sample-data/English_UPRN.geojson">available as geojson</a>.
+        </p>
+
+
+        <h2>Fictional tax zones</h2>
+        <p>
+          The boundaries of the two tax zones are arbitrary, although they do follow ward boundaries.
+          The boundaries of the <a href="/static/sample-data/North_East_tax_zone.geojson">north east zone</a> and the <a href="/static/sample-data/South_West_tax_zone.geojson">south west zone</a> are available as geojson.
+        </p>
+        <p><img src="/static/images/taxzones.png" alt="Tax zones"></p>
+
+      </div>
+    </div>
+  </div>
+  {% include "_footer.html" %}
