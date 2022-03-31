@@ -12,6 +12,19 @@ from ltt.data_object_models import Attribute
 def get_property_info(
     wra_property_id: Optional[int] = None, address: Optional[str] = None
 ) -> Optional[Dict[str, Any]]:
+    """
+    Retruns information and attrributes related to the property
+
+    Parameters:
+        - wra_property_id: the internal (to the platform) unique identifier
+          for the property.
+        - address: the property address, exactly as it appears in the database
+
+    Returns:
+        - property_info dictionaty, with both property identifiers 
+          (wra_property_id and address) and nested attributes linked to that 
+          property.
+    """
     if wra_property_id:
         return _get_property_info_from_id(wra_property_id)
 

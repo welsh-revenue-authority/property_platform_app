@@ -2,9 +2,7 @@
 Localised LTT calclulator
 """
 
-from datetime import date
 from typing import Dict, Optional, Union
-from os import wait
 from ltt.db_connections import sql_query
 from ltt.data_object_models import Attributes
 

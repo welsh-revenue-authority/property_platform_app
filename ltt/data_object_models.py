@@ -30,6 +30,10 @@ class PropertyInfoRequest(BaseModel):
     address: Optional[str] = None
 
 
+class Uprn(BaseModel):
+    uprn: int
+
+
 # Database entity models
 class Attribute(BaseModel):
     wra_property_id: int
