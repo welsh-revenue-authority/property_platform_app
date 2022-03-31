@@ -6,8 +6,9 @@ from fastapi.templating import Jinja2Templates
 
 # from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from ltt.calculator import calculate_tax
-from ltt.data_object_models import PropertyInfo, PropertyInfoRequest
+from ltt.data_object_models import PropertyInfo, PropertyInfoRequest, Uprn
 from ltt.property_info import get_property_info
+from ltt.location_checks import in_wales
 
 
 # App instantiation and setup
@@ -89,18 +90,6 @@ def test_api(property_info: Union[PropertyInfo, List[PropertyInfo]]):
     return taxes
 
 
-@app.post("/sold_price")
-def sold_price():
-    """
-    Returns information on last sold price. May return multiple results as WRA
-    get this info instantly on transaction but land registry have a lag of
-    several weeks (return both?).
-
-    User groups: estate agenst, public
-    """
-    return {"status": "API not yet available"}
-
-
 @app.post("/property_info")
 def property_info(property_info_request: PropertyInfoRequest):
     """
@@ -121,6 +110,27 @@ def property_info(property_info_request: PropertyInfoRequest):
         wra_property_id=property_info_request.wra_property_id,
         address=property_info_request.address,
     )
+
+
+@app.post("/is_it_in_wales")
+def is_it_in_wales(uprn: Uprn):
+    """
+    Returns if a UPRN is in wales.
+    """
+    return {"in_wales": in_wales(uprn.uprn)}
+    
+
+
+@app.post("/sold_price")
+def sold_price():
+    """
+    Returns information on last sold price. May return multiple results as WRA
+    get this info instantly on transaction but land registry have a lag of
+    several weeks (return both?).
+
+    User groups: estate agenst, public
+    """
+    return {"status": "API not yet available"}
 
 
 @app.post("/property_tax_band")
