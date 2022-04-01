@@ -27,11 +27,16 @@
   padding: 0em 1em 0em 0em;
 }
 
-img {
+img.figure {
   border:solid 1px #ccc;
   padding:10px;
   max-width:600px
 }
+
+img.product-image {
+  margin-top:10px;
+}
+
 .poc-highlight{
     margin-top:30px;
 }
