@@ -5,15 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Property Information - Land Property Platform</title>
+    <title>Is it in Wales? - Land Property Platform</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Property Information";
-        var mkdocs_page_input_path = "property_info.md";
+        var mkdocs_page_name = "Is it in Wales?";
+        var mkdocs_page_input_path = "is_it_in_wales.md";
         var mkdocs_page_url = null;
       </script>
     
@@ -44,8 +44,12 @@
                 <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
                 </li>
               </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../property_info/">Property Information</a>
+                </li>
+              </ul>
               <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">Property Information</a>
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Is it in Wales?</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#endpoints">Endpoints</a>
     </li>
@@ -53,25 +57,13 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#attributes">Attributes</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#second-home">Second home</a>
+    <li class="toctree-l3"><a class="reference internal" href="#requests">Requests</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#buy_to_let">Buy_to_let</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#attribute-a">Attribute a</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#attribute-b">Attribute b</a>
-    </li>
-        </ul>
+    <li class="toctree-l3"><a class="reference internal" href="#response">Response</a>
     </li>
         </ul>
     </li>
     </ul>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../is_it_in_wales/">Is it in Wales?</a>
                 </li>
               </ul>
       </div>
@@ -87,7 +79,7 @@
       <div class="wy-nav-content">
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li><li>Property Information</li>
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li><li>Is it in Wales?</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -97,71 +89,65 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="property-information-api">Property Information API</h1>
-<p><a href="https://land-property-platform.herokuapp.com/docs#default/property_info_property_info_post">Try it out</a></p>
-<p>Find all information on a given property.</p>
+                <h1 id="is-it-in-wales">Is it in Wales?</h1>
+<p><a href="https://land-property-platform.herokuapp.com/docs#/default/is_it_in_wales_is_it_in_wales_post">Try it out</a></p>
+<p>Determine if a property is in wales.</p>
 <h2 id="endpoints">Endpoints</h2>
-<p><code>https://land-property-platform.herokuapp.com/property_info</code></p>
+<p><code>https://land-property-platform.herokuapp.com/is_it_in_wales</code></p>
 <h2 id="parameters">Parameters</h2>
-<p><strong>wra_property_id:</strong> (integer) The wra_property_id</p>
-<p><strong>address:</strong> (string) The address of the property as found in the database,</p>
+<p><strong>uprn:</strong> (integer) The UPRN of the property (don't know it? search 
+<a href="https://www.findmyaddress.co.uk/search">here</a></p>
 <h2 id="examples">Examples</h2>
+<h3 id="requests">Requests</h3>
 <p>Request body:</p>
 <pre><code class="language-console">{
-    &quot;address&quot;: &quot;58, Mountain Road, Pontypandy&quot;
+    &quot;uprn&quot;: 10015308931
 }
 </code></pre>
-<p>Response body:</p>
+<p>Or curl request:</p>
+<pre><code class="language-console">curl -X 'POST' \
+  'https://land-property-platform.herokuapp.com/is_it_in_wales' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  &quot;uprn&quot;: 10015308931
+}'
+</code></pre>
+<p>Or using python:</p>
+<pre><code class="language-python">import requests
+import json
+
+
+uprn = 10015308931
+json_data = json.dumps({&quot;uprn&quot;: uprn})
+response = requests.post(
+    &quot;https://land-property-platform.herokuapp.com/is_it_in_wales&quot;,
+    data=json_data,
+)
+</code></pre>
+<h3 id="response">Response</h3>
+<p>Response body example:</p>
 <pre><code class="language-console">{
-    &quot;wra_property_id&quot;: 6,
-    &quot;address&quot;: &quot;58, Mountain Road, Pontypandy&quot;,
-    &quot;attributes&quot;: {
-        &quot;attribute_a&quot;: 2,
-        &quot;buy_to_let&quot;: true,
-        &quot;attribute_b&quot;: 3
-    }
+    &quot;in_wales&quot;: &quot;true&quot;
 }
 </code></pre>
-<p>Response schema:</p>
+<p>Response body schema:</p>
 <pre><code class="language-console">{
-    # Property identifiers (request will have identified one of these)
-    &quot;wra_property_id&quot;: integer,
-    &quot;address&quot;: string,
-    # Property attributes
-    &quot;attributes&quot;: {
-        &quot;attribute&quot;: attribite value,
-        ... : ...
-    }
+    &quot;in_wales&quot;: string
 }
 </code></pre>
-<h3 id="attributes">Attributes</h3>
-<p>Attributes contain the know information on the property.</p>
-<h4 id="second-home">Second home</h4>
-<p><strong>Attribute name:</strong> "second_home"<br>
-<strong>Possible values:</strong> true, false<br>
-<strong>Description:</strong> If true, the property is not a main residence.<br></p>
-<h4 id="buy_to_let">Buy_to_let</h4>
-<p><strong>Attribute name:</strong> "buy_to_let"<br>
-<strong>Possible values:</strong> true, false<br>
-<strong>Description:</strong> If true, the property is considered a buy-to-let property. 
-Note that a property is not identified as a second home if it is a buy-to-let
-property.<br></p>
-<h4 id="attribute-a">Attribute a</h4>
-<p><strong>Attribute name:</strong> "attribute_a"<br>
-<strong>Possible values:</strong> 1, 2<br>
-<strong>Description:</strong> A placeholder attribute which can hold integer values and has
-a multiplier effect on LLT.<br></p>
-<h4 id="attribute-b">Attribute b</h4>
-<p><strong>Attribute name:</strong> "attribute_b"<br>
-<strong>Possible values:</strong> 1, 2, 3<br>
-<strong>Description:</strong> A placeholder attribute which can hold integer values and has
-a fixed addition effect on LLT.<br></p>
+<p>Possible "in_wales" values:</p>
+<ul>
+<li>"true" -- The property is in Wales</li>
+<li>"false" -- The property is not in Wales</li>
+<li>"partially" -- The property has been manually flagges as partially in Wales
+and partially in England</li>
+</ul>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../is_it_in_wales/" class="btn btn-neutral float-right" title="Is it in Wales?">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../property_info/" class="btn btn-neutral float-left" title="Property Information"><span class="icon icon-circle-arrow-left"></span> Previous</a>
     </div>
 
   <hr/>
@@ -184,10 +170,8 @@ a fixed addition effect on LLT.<br></p>
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../property_info/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
-    
-      <span><a href="../is_it_in_wales/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
