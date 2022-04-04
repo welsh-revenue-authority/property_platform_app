@@ -42,9 +42,4 @@ def in_wales(uprn: int):
     """
     )
     result = result[0][0]
-    if result == "true":
-        return True
-    elif result == "false":
-        return False
-    elif result == "partially":
-        return result
+    return result
