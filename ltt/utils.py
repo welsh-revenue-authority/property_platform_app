@@ -1,9 +1,10 @@
 from datetime import date, timedelta
+import json
 from pprint import pprint
 from typing import List, Dict, Any
 import random
 from ltt.add_attributes import _add_new_attribute
-from ltt.db_connections import sql_query
+from ltt.db_connections import sql_query, sql_command
 
 
 def add_fake_attributes():
@@ -97,5 +98,55 @@ def _generate_date_in_past() -> str:
     return str(today - delta)
 
 
-if __name__ == "__main__":
-    add_fake_attributes()
+def generate_address():
+    number = random.randint(1, 200)
+    street = random.choice([
+        "England Street",
+        "England Lane",
+        "England Drive"
+    ])
+    return f"{number}, {street}, Upper Leadworth"
+
+
+def insert_property(address):
+   sql_command(f"""
+            INSERT INTO register.properties(address) VALUES
+                ('{address}');
+        """)
+   wra_property_id = sql_query(f"""
+                SELECT wra_property_id
+                FROM register.properties
+                WHERE address = '{address}';
+           """)
+   return wra_property_id[0][0]
+
+
+def insert_point(wra_property_id, feature):
+    uprn = feature["properties"]["UPRN"]
+
+    geometry = feature["geometry"]
+    geom_text = f"{geometry['type'].upper()}({geometry['coordinates'][0]} {geometry['coordinates'][1]})"
+    
+    command = (f"""
+                INSERT INTO register.points(uprn, wra_property_id, geom) VALUES
+                    ({uprn}, {wra_property_id}, ST_GeomFromText('{geom_text}', 27700));
+            """)
+    print(command)
+    sql_command(command)
+
+
+def add_english_uprns():
+    with open("../LTT_calculation/fiction/English_UPRN.geojson", "r") as f:
+        j = json.load(f)
+    
+    features = j["features"]
+    addresses = []
+    while len(addresses) < 64:
+        address = generate_address()
+        if address not in addresses:
+            addresses.append(address)
+    
+    for feature, address in zip(features, addresses):
+        wra_property_id = insert_property(address)
+        insert_point(wra_property_id, feature)
+    
