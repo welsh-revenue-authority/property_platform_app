@@ -9,7 +9,7 @@ from ltt.calculator import calculate_tax
 from ltt.data_object_models import PropertyInfo, PropertyInfoRequest, Uprn
 from ltt.property_info import get_property_info
 from ltt.location_checks import in_wales
-import docs.fastapi_metadata as docs
+import fastapi_metadata as docs
 
 
 # App instantiation and setup
