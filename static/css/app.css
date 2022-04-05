@@ -63,3 +63,7 @@ img.product-image {
   padding-top:5px;
   padding-bottom:10px;
 }
+
+a.poc-link:hover {
+  text-decoration:line-through;
+}

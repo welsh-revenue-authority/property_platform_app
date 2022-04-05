@@ -14,7 +14,7 @@ import fastapi_metadata as docs
 
 # App instantiation and setup
 app = FastAPI(
-    title="Land and property tax platform",
+    title="Land and property platform",
     description=docs.DESCRIPTION,
     openapi_tags=docs.TAGS_METADATA,
     contact=docs.CONTACT
@@ -28,22 +28,25 @@ templates = Jinja2Templates(directory="templates")
 def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
+@app.get("/getting-started", response_class=HTMLResponse, include_in_schema=False)
+def pricing(request: Request):
+    return templates.TemplateResponse("getting-started.html", {"request": request})
 
-@app.get(
-    "/about-the-platform", response_class=HTMLResponse, include_in_schema=False
-)
-def index(request: Request):
-    return templates.TemplateResponse("datasets.html", {"request": request})
+@app.get("/data", response_class=HTMLResponse, include_in_schema=False)
+def data(request: Request):
+    return templates.TemplateResponse("data.html", {"request": request})
 
+@app.get("/analysts", response_class=HTMLResponse, include_in_schema=False)
+def analysts(request: Request):
+    return templates.TemplateResponse("analysts.html", {"request": request})
+
+@app.get("/features", response_class=HTMLResponse, include_in_schema=False)
+def features(request: Request):
+    return templates.TemplateResponse("features.html", {"request": request})
 
 @app.get("/roadmap", response_class=HTMLResponse, include_in_schema=False)
 def roadmap(request: Request):
     return templates.TemplateResponse("roadmap.html", {"request": request})
-
-
-@app.get("/datasets", response_class=HTMLResponse, include_in_schema=False)
-def datasets(request: Request):
-    return templates.TemplateResponse("datasets.html", {"request": request})
 
 
 @app.get("/poc-data", response_class=HTMLResponse, include_in_schema=False)
