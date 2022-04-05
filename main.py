@@ -22,51 +22,29 @@ templates = Jinja2Templates(directory="templates")
 def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
+@app.get("/getting-started", response_class=HTMLResponse, include_in_schema=False)
+def pricing(request: Request):
+    return templates.TemplateResponse("getting-started.html", {"request": request})
 
-@app.get(
-    "/about-the-platform", response_class=HTMLResponse, include_in_schema=False
-)
-def index(request: Request):
-    return templates.TemplateResponse("datasets.html", {"request": request})
-
-
-@app.get("/roadmap", response_class=HTMLResponse, include_in_schema=False)
-def roadmap(request: Request):
-    return templates.TemplateResponse("roadmap.html", {"request": request})
-
-@app.get("/datasets", response_class=HTMLResponse, include_in_schema=False)
-def datasets(request: Request):
-    return templates.TemplateResponse("datasets.html", {"request": request})
-
-@app.get("/poc-data", response_class=HTMLResponse, include_in_schema=False)
-def poc_data(request: Request):
-    return templates.TemplateResponse("poc-data.html", {"request": request})
-
-@app.get("/features", response_class=HTMLResponse, include_in_schema=False)
-def features(request: Request):
-    return templates.TemplateResponse("features.html", {"request": request})
-
+@app.get("/data", response_class=HTMLResponse, include_in_schema=False)
+def data(request: Request):
+    return templates.TemplateResponse("data.html", {"request": request})
 
 @app.get("/analysts", response_class=HTMLResponse, include_in_schema=False)
 def analysts(request: Request):
     return templates.TemplateResponse("analysts.html", {"request": request})
 
+@app.get("/features", response_class=HTMLResponse, include_in_schema=False)
+def features(request: Request):
+    return templates.TemplateResponse("features.html", {"request": request})
 
-@app.get("/api-docs", response_class=HTMLResponse, include_in_schema=False)
-def apidocs(request: Request):
-    return templates.TemplateResponse("apidocs.html", {"request": request})
+@app.get("/roadmap", response_class=HTMLResponse, include_in_schema=False)
+def roadmap(request: Request):
+    return templates.TemplateResponse("roadmap.html", {"request": request})
 
-
-@app.get("/getting-started", response_class=HTMLResponse, include_in_schema=False)
-def pricing(request: Request):
-    return templates.TemplateResponse("getting-started.html", {"request": request})
-
-
-# Test get API
-@app.get("/api")
-def read_api_root():
-    return {"Hello": "World"}
-
+@app.get("/poc-data", response_class=HTMLResponse, include_in_schema=False)
+def poc_data(request: Request):
+    return templates.TemplateResponse("poc-data.html", {"request": request})
 
 # Test post api
 @app.post("/LTT_tax")
