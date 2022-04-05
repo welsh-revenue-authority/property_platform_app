@@ -2,4 +2,5 @@ site_name: Land Property Platform
 nav:
   - Home: index.md
   - Property Information: property_info.md
+  - Is it in Wales?: is_it_in_wales.md
 theme: readthedocs

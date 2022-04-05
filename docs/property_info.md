@@ -1,7 +1,22 @@
 # Property Information API
-Use this api to get all available information on a property.
 
-## Example
+[Try it out](https://land-property-platform.herokuapp.com/docs#default/property_info_property_info_post)
+
+Find all information on a given property.
+
+
+## Endpoints
+
+`https://land-property-platform.herokuapp.com/property_info`
+
+
+## Parameters
+
+__wra_property_id:__ (integer) The wra_property_id
+
+__address:__ (string) The address of the property as found in the database,
+
+## Examples
 Request body:
 
 ```console
@@ -23,16 +38,7 @@ Response body:
 }
 ```
 
-## How to Use
-This is a REST API. Send a post request to url: 
-[https://land-property-platform.herokuapp.com/property_info](https://land-property-platform.herokuapp.com/property_info)
-with a JSON body with either an __address__ field or a __wra_property_id__ field.
-
-A respose with all available information on the property will be returned. *Note
-that this is for illustrative purposes and will return fake data. Future API 
-calls that return real data mak require security clearance.*
-
-Response shcema:
+Response schema:
 
 ```console
 {
@@ -46,28 +52,30 @@ Response shcema:
     }
 }
 ```
-## Attributes
+
+
+### Attributes
 Attributes contain the know information on the property.
 
-### Second home
+#### Second home
 __Attribute name:__ "second_home"<br>
 __Possible values:__ true, false<br>
 __Description:__ If true, the property is not a main residence.<br>
 
-### Buy_to_let
+#### Buy_to_let
 __Attribute name:__ "buy_to_let"<br>
 __Possible values:__ true, false<br>
 __Description:__ If true, the property is considered a buy-to-let property. 
 Note that a property is not identified as a second home if it is a buy-to-let
 property.<br>
 
-### Attribute a
+#### Attribute a
 __Attribute name:__ "attribute_a"<br>
 __Possible values:__ 1, 2<br>
 __Description:__ A placeholder attribute which can hold integer values and has
 a multiplier effect on LLT.<br>
 
-### Attribute b
+#### Attribute b
 __Attribute name:__ "attribute_b"<br>
 __Possible values:__ 1, 2, 3<br>
 __Description:__ A placeholder attribute which can hold integer values and has

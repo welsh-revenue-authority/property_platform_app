@@ -9,10 +9,16 @@ from ltt.calculator import calculate_tax
 from ltt.data_object_models import PropertyInfo, PropertyInfoRequest, Uprn
 from ltt.property_info import get_property_info
 from ltt.location_checks import in_wales
+import fastapi_metadata as docs
 
 
 # App instantiation and setup
-app = FastAPI(title="Land and property tax platform")
+app = FastAPI(
+    title="Land and property tax platform",
+    description=docs.DESCRIPTION,
+    openapi_tags=docs.TAGS_METADATA,
+    contact=docs.CONTACT
+)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 # security = HTTPBasic()
@@ -42,12 +48,44 @@ def features(request: Request):
 def roadmap(request: Request):
     return templates.TemplateResponse("roadmap.html", {"request": request})
 
+
 @app.get("/poc-data", response_class=HTMLResponse, include_in_schema=False)
 def poc_data(request: Request):
     return templates.TemplateResponse("poc-data.html", {"request": request})
 
+
+@app.get("/features", response_class=HTMLResponse, include_in_schema=False)
+def features(request: Request):
+    return templates.TemplateResponse("features.html", {"request": request})
+
+
+@app.get("/analysts", response_class=HTMLResponse, include_in_schema=False)
+def analysts(request: Request):
+    return templates.TemplateResponse("analysts.html", {"request": request})
+
+
+@app.get("/api-docs", response_class=HTMLResponse, include_in_schema=False)
+def apidocs(request: Request):
+    return templates.TemplateResponse("apidocs.html", {"request": request})
+
+
+@app.get(
+    "/getting-started", response_class=HTMLResponse, include_in_schema=False
+)
+def pricing(request: Request):
+    return templates.TemplateResponse(
+        "getting-started.html", {"request": request}
+    )
+
+
+# Test get API
+# @app.get("/api")
+# def read_api_root():
+#     return {"Hello": "World"}
+
+
 # Test post api
-@app.post("/LTT_tax")
+@app.post("/LTT_tax", tags=["LTT_tax"])
 def test_api(property_info: Union[PropertyInfo, List[PropertyInfo]]):
     """
     Returns LTT tax for each set of property infos
@@ -71,7 +109,7 @@ def test_api(property_info: Union[PropertyInfo, List[PropertyInfo]]):
     return taxes
 
 
-@app.post("/property_info")
+@app.post("/property_info", tags=["property_info"])
 def property_info(property_info_request: PropertyInfoRequest):
     """
     Given an identifier, property information is returned. Some user groups may
@@ -80,8 +118,7 @@ def property_info(property_info_request: PropertyInfoRequest):
     User groups: local authorities (full access), public (restricted access)
     """
     if not (
-        property_info_request.wra_property_id
-        or property_info_request.address
+        property_info_request.wra_property_id or property_info_request.address
     ):
         return {
             "error": "one from wra_property_id or address must be provided"
@@ -93,44 +130,43 @@ def property_info(property_info_request: PropertyInfoRequest):
     )
 
 
-@app.post("/is_it_in_wales")
+@app.post("/is_it_in_wales", tags=["is_it_in_wales"])
 def is_it_in_wales(uprn: Uprn):
     """
     Returns if a UPRN is in wales.
     """
     return {"in_wales": in_wales(uprn.uprn)}
-    
 
 
-@app.post("/sold_price")
-def sold_price():
-    """
-    Returns information on last sold price. May return multiple results as WRA
-    get this info instantly on transaction but land registry have a lag of
-    several weeks (return both?).
-
-    User groups: estate agenst, public
-    """
-    return {"status": "API not yet available"}
-
-
-@app.post("/property_tax_band")
-def property_tax_band():
-    """
-    Given an identifier, the properties tax band is returned. Restricted
-    access.
-
-    User groups: local authorities
-    """
-    return {"status": "API not yet available"}
-
-
-@app.post("/tax_zone")
-def tax_zone():
-    """
-    Given a property identifier, the tax zone in which the property resides is
-    returned.
-
-    User groups: all
-    """
-    return {"status": "API not yet available"}
+# @app.post("/sold_price")
+# def sold_price():
+#     """
+#     Returns information on last sold price. May return multiple results as WRA
+#     get this info instantly on transaction but land registry have a lag of
+#     several weeks (return both?).
+# 
+#     User groups: estate agenst, public
+#     """
+#     return {"status": "API not yet available"}
+# 
+# 
+# @app.post("/property_tax_band")
+# def property_tax_band():
+#     """
+#     Given an identifier, the properties tax band is returned. Restricted
+#     access.
+# 
+#     User groups: local authorities
+#     """
+#     return {"status": "API not yet available"}
+# 
+# 
+# @app.post("/tax_zone")
+# def tax_zone():
+#     """
+#     Given a property identifier, the tax zone in which the property resides is
+#     returned.
+# 
+#     User groups: all
+#     """
+#     return {"status": "API not yet available"}
