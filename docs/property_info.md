@@ -12,7 +12,7 @@ Find all information on a given property.
 
 ## Parameters
 
-__wra_property_id:__ (integer) The wra_property_id
+__platform_property_id:__ (integer) The platform_property_id
 
 __address:__ (string) The address of the property as found in the database,
 
@@ -28,7 +28,7 @@ Request body:
 Response body:
 ```console
 {
-    "wra_property_id": 6,
+    "platform_property_id": 6,
     "address": "58, Mountain Road, Pontypandy",
     "attributes": {
         "attribute_a": 2,
@@ -43,7 +43,7 @@ Response schema:
 ```console
 {
     # Property identifiers (request will have identified one of these)
-    "wra_property_id": integer,
+    "platform_property_id": integer,
     "address": string,
     # Property attributes
     "attributes": {

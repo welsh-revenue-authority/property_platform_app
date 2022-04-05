@@ -10,7 +10,7 @@ SELECT
         WHEN EXISTS (
             SELECT attribute_type
             FROM register.attributes
-            INNER JOIN register.points USING(wra_property_id)
+            INNER JOIN register.points USING(platform_property_id)
             WHERE uprn = 10014514734
             AND attribute_type = 'cross_boarder'
         ) THEN 'partially'
@@ -21,12 +21,11 @@ SELECT
             FROM 
                 -- Wales polygon beside uprn point
                 (SELECT
-                    (SELECT geom FROM register.polygons WHERE wra_polygon_id = 2) AS wales,
+                    (SELECT geom FROM register.polygons WHERE platform_polygon_id = 2) AS wales,
                     (SELECT geom FROM register.points WHERE uprn = 10014514734) AS uprn
                 ) as in_wales_check
             ) THEN 'true'
         ELSE 'false' 
     END AS in_wales
 FROM register.points
-JOIN register.properties USING(wra_property_id)
 WHERE uprn = 10014514734;

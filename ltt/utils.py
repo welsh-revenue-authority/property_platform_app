@@ -13,7 +13,7 @@ def add_fake_attributes():
     attribute_types = [row[0] for row in result]
 
     # Get properties
-    result = sql_query("SELECT wra_property_id FROM register.properties;")
+    result = sql_query("SELECT platform_property_id FROM register.properties;")
     property_ids = [row[0] for row in result]
 
     # Loop through the properties and create some fictional attributes
@@ -30,7 +30,7 @@ def add_fake_attributes():
             kwargs = _determine_kwargs(attribute)
             pprint(kwargs)
             # Add to database
-            _add_new_attribute(wra_property_id=prop_id, **kwargs)
+            _add_new_attribute(platform_property_id=prop_id, **kwargs)
 
 
 def _sample_attributes(attribute_types: List[str]) -> List[str]:
@@ -113,23 +113,23 @@ def insert_property(address):
             INSERT INTO register.properties(address) VALUES
                 ('{address}');
         """)
-   wra_property_id = sql_query(f"""
-                SELECT wra_property_id
+   platform_property_id = sql_query(f"""
+                SELECT platform_property_id
                 FROM register.properties
                 WHERE address = '{address}';
            """)
-   return wra_property_id[0][0]
+   return platform_property_id[0][0]
 
 
-def insert_point(wra_property_id, feature):
+def insert_point(platform_property_id, feature):
     uprn = feature["properties"]["UPRN"]
 
     geometry = feature["geometry"]
     geom_text = f"{geometry['type'].upper()}({geometry['coordinates'][0]} {geometry['coordinates'][1]})"
     
     command = (f"""
-                INSERT INTO register.points(uprn, wra_property_id, geom) VALUES
-                    ({uprn}, {wra_property_id}, ST_GeomFromText('{geom_text}', 27700));
+                INSERT INTO register.points(uprn, platform_property_id, geom) VALUES
+                    ({uprn}, {platform_property_id}, ST_GeomFromText('{geom_text}', 27700));
             """)
     print(command)
     sql_command(command)
@@ -147,6 +147,6 @@ def add_english_uprns():
             addresses.append(address)
     
     for feature, address in zip(features, addresses):
-        wra_property_id = insert_property(address)
-        insert_point(wra_property_id, feature)
+        platform_property_id = insert_property(address)
+        insert_point(platform_property_id, feature)
     

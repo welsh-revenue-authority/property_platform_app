@@ -26,7 +26,7 @@ class PropertyInfo(BaseModel):
 
 
 class PropertyInfoRequest(BaseModel):
-    wra_property_id: Optional[int] = None
+    platform_property_id: Optional[int] = None
     address: Optional[str] = None
 
 
@@ -36,14 +36,14 @@ class Uprn(BaseModel):
 
 # Database entity models
 class Attribute(BaseModel):
-    wra_property_id: int
+    platform_property_id: int
     attribute_type: str
     bool_value: Optional[bool] = None
     text_value: Optional[str] = None
     numeric_value: Optional[Union[int, float]] = None
     valid_from: Optional[str] = str(datetime.date.today())
     valid_to: Optional[str] = None
-    wra_attribute_id: Optional[int] = None
+    platform_attribute_id: Optional[int] = None
 
     @property
     def value(self) -> Any:

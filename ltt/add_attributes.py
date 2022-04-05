@@ -5,7 +5,7 @@ from ltt.data_object_models import Attribute
 
 
 def add_attribute(
-    wra_property_id: int,
+    platform_property_id: int,
     attribute_type: str,
     bool_value: Optional[bool] = None,
     text_value: Optional[str] = None,
@@ -15,7 +15,7 @@ def add_attribute(
     debug: Optional[bool] = False,
 ):
     attribute = Attribute(
-        wra_property_id=wra_property_id,
+        platform_property_id=platform_property_id,
         attribute_type=attribute_type,
         bool_value=bool_value,
         text_value=text_value,
@@ -59,7 +59,7 @@ def _get_attribute(attribute: Attribute) -> Optional[Attribute]:
     result = sql_query(
         f"""
         SELECT
-            wra_property_id
+            platform_property_id
           , attribute_type
           , bool_value
           , text_value
@@ -67,7 +67,7 @@ def _get_attribute(attribute: Attribute) -> Optional[Attribute]:
           , valid_from
           , valid_to
         FROM register.attributes
-        WHERE wra_property_id = '{attribute.wra_property_id}'
+        WHERE platform_property_id = '{attribute.platform_property_id}'
         AND attribute_type = '{attribute.attribute_type}'
         AND CURRENT_DATE BETWEEN valid_from AND valid_to;
     """
@@ -79,7 +79,7 @@ def _get_attribute(attribute: Attribute) -> Optional[Attribute]:
         return
 
     return Attribute(
-        wra_property_id=result[0],
+        platform_property_id=result[0],
         attribute_type=result[1],
         bool_value=result[2],
         text_value=result[3],
@@ -96,14 +96,14 @@ def _close_attribute(
         f"""
         UPDATE register.attributes 
         SET valid_to = CURRENT_DATE
-        WHERE wra_property_id = {attribute.wra_property_id}
+        WHERE platform_property_id = {attribute.platform_property_id}
         AND attribute_type = '{attribute.attribute_type}';
     """
     )
     if verbose:
         print(
             f"{attribute.attribute_type} for property ",
-            f"{attribute.wra_property_id} closed",
+            f"{attribute.platform_property_id} closed",
         )
 
 
@@ -135,7 +135,7 @@ def _attribute_type_exists(attribute_type: str) -> bool:
 def _fields_list(attribute: Attribute) -> str:
     field_list = []
     for field_name, field_value in {
-        "wra_property_id": attribute.wra_property_id,
+        "platform_property_id": attribute.platform_property_id,
         "attribute_type": attribute.attribute_type,
         "bool_value": attribute.bool_value,
         "text_value": attribute.text_value,
@@ -154,7 +154,7 @@ def _fields_list(attribute: Attribute) -> str:
 
 def _collect_values(attribute: Attribute) -> str:
     all_fields = [
-        attribute.wra_property_id,
+        attribute.platform_property_id,
         attribute.attribute_type,
         attribute.bool_value,
         attribute.text_value,
@@ -178,5 +178,5 @@ def _collect_values(attribute: Attribute) -> str:
 
 if __name__ == "__main__":
     add_attribute(
-        wra_property_id=3, attribute_type="attribute_a", numeric_value=2
+        platform_property_id=3, attribute_type="attribute_a", numeric_value=2
     )
