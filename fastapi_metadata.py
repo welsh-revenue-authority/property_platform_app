@@ -5,12 +5,9 @@ NB: This is not part of Mkdocs and should not be referenced in mkdocs.yml
 """
 
 DESCRIPTION = """
-__PROOF OF CONCEPT - CONTAINS FAKE DATA - APIS NOT STABLE OR TESTED__
 
-A collection of APIs to serve data from a centralised property register for
-Wales.
+This is a proof of concept created by the Welsh Revenue Authority. It contains synthetic data and does not cover the whole of Wales. [Find out more about what data is included in the proof of concept](https://land-property-platform.herokuapp.com/poc-data).
 
-Use these APIs to request information about properties in Wales.
 """
 TAGS_METADATA = [
         {

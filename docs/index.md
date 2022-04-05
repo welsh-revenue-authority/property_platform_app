@@ -1,4 +1,4 @@
-# Welcome to Documentation for the Land Property Platform for Wales
+# Welcome to Documentation for the Land and Property Platform
 
 This is the documentaion for the proof-of-concept API calls.
 

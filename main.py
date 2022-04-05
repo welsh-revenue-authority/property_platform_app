@@ -14,7 +14,7 @@ import fastapi_metadata as docs
 
 # App instantiation and setup
 app = FastAPI(
-    title="Land and property tax platform",
+    title="Land and property platform",
     description=docs.DESCRIPTION,
     openapi_tags=docs.TAGS_METADATA,
     contact=docs.CONTACT
