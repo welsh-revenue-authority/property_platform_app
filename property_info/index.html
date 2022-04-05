@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Property Information - Land Property Platform</title>
+    <title>Property Information - Land and property platform</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
@@ -31,7 +31,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
     <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
-          <a href=".." class="icon icon-home"> Land Property Platform
+          <a href=".." class="icon icon-home"> Land and property platform
         </a><div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
       <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
@@ -81,7 +81,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
       <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="..">Land Property Platform</a>
+          <a href="..">Land and property platform</a>
         
       </nav>
       <div class="wy-nav-content">
@@ -103,7 +103,7 @@
 <h2 id="endpoints">Endpoints</h2>
 <p><code>https://land-property-platform.herokuapp.com/property_info</code></p>
 <h2 id="parameters">Parameters</h2>
-<p><strong>wra_property_id:</strong> (integer) The wra_property_id</p>
+<p><strong>platform_property_id:</strong> (integer) The platform_property_id</p>
 <p><strong>address:</strong> (string) The address of the property as found in the database,</p>
 <h2 id="examples">Examples</h2>
 <p>Request body:</p>
@@ -113,7 +113,7 @@
 </code></pre>
 <p>Response body:</p>
 <pre><code class="language-console">{
-    &quot;wra_property_id&quot;: 6,
+    &quot;platform_property_id&quot;: 6,
     &quot;address&quot;: &quot;58, Mountain Road, Pontypandy&quot;,
     &quot;attributes&quot;: {
         &quot;attribute_a&quot;: 2,
@@ -125,7 +125,7 @@
 <p>Response schema:</p>
 <pre><code class="language-console">{
     # Property identifiers (request will have identified one of these)
-    &quot;wra_property_id&quot;: integer,
+    &quot;platform_property_id&quot;: integer,
     &quot;address&quot;: string,
     # Property attributes
     &quot;attributes&quot;: {
