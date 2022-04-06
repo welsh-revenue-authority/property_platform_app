@@ -41,12 +41,16 @@ def get_property_info(
 
     # Create return dictionary
     property_info = {
-        "platform_property_id": platform_property_id,
+        "platform_property_id": result[0][0],
         "address": result[0][5],
         "attributes": {}
     }
 
     # Add geojsons seperately and handle empty values
+    # Note: Better solution would be to not add the field into the dictionary
+    # if there is no result (rather than add "not in database") to keep the
+    # field value types consistent but this will look more seld explanatory
+    # for early PoC demos
     if result[0][7]:
         uprn_point_location = json.loads(result[0][7])
     else:
@@ -116,7 +120,7 @@ def _address_query(address: str):
         JOIN register.properties USING(platform_property_id)
         LEFT JOIN register.points USING(platform_property_id)
         LEFT JOIN register.polygons USING(platform_property_id)
-        WHERE address = {address}
+        WHERE address = '{address}'
         AND CURRENT_DATE BETWEEN valid_from AND valid_to;
     """
     )
