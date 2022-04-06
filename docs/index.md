@@ -1,6 +1,6 @@
 # Welcome to Documentation for the Land and Property Platform
 
-This is the documentaion for the proof-of-concept API calls.
+This is the documentation for the proof-of-concept API calls.
 
 To see how the platform might look, head to 
 [land-property-platform.herokuapp.com](https://land-property-platform.herokuapp.com).

@@ -1,7 +1,7 @@
 from typing import Union, List
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, PlainTextResponse
 from fastapi.templating import Jinja2Templates
 
 # from fastapi.security import HTTPBasic, HTTPBasicCredentials
@@ -76,6 +76,15 @@ def pricing(request: Request):
     return templates.TemplateResponse(
         "getting-started.html", {"request": request}
     )
+
+@app.get(
+    "/robots.txt", response_class=PlainTextResponse, include_in_schema=False
+)
+def robots(request: Request):
+    with open('static/robots.txt') as f:
+        text = f.read()
+    return text
+
 
 
 # Test get API
