@@ -17,24 +17,69 @@ __platform_property_id:__ (integer) The platform_property_id
 __address:__ (string) The address of the property as found in the database,
 
 ## Examples
-Request body:
 
+### Requests
+
+Request body:
 ```console
 {
     "address": "58, Mountain Road, Pontypandy"
 }
 ```
 
+Or curl request:
+```console
+curl -X 'POST' \
+  'https://land-property-platform.herokuapp.com/property_info' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "platform_property_id": 6
+}'
+```
+
+Or using python:
+```python
+import requests
+import json
+
+
+address = "58, Mountain Road, Pontypandy"
+json_data = json.dumps({"address": address})
+response = requests.post(
+    "https://land-property-platform.herokuapp.com/property_info",
+    data=json_data,
+)
+```
+
+`platform_property_id` can be used instead of address. An example request body:
+```console
+{
+    "platform_property_id": 6
+}
+```
+
+
+### Response
+
 Response body:
 ```console
 {
-    "platform_property_id": 6,
-    "address": "58, Mountain Road, Pontypandy",
-    "attributes": {
-        "attribute_a": 2,
-        "buy_to_let": true,
-        "attribute_b": 3
-    }
+  "platform_property_id": 6,
+  "address": "58, Mountain Road, Pontypandy",
+  "attributes": {
+    "attribute_a": 2,
+    "buy_to_let": true,
+    "attribute_b": 3
+  },
+  "uprn_point_location": {
+    "type": "Point",
+    "coordinates": [
+      257466.86,
+      326552.57
+    ]
+  },
+  "extent": "not in database"
 }
 ```
 
@@ -49,7 +94,9 @@ Response schema:
     "attributes": {
         "attribute": attribite value,
         ... : ...
-    }
+    },
+    "uprn_point_location": geojson | string,
+    "extent": geojson | string
 }
 ```
 
