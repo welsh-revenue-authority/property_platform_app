@@ -53,6 +53,10 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a>
         <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#requests">Requests</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#response">Response</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#attributes">Attributes</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#second-home">Second home</a>
@@ -106,20 +110,56 @@
 <p><strong>platform_property_id:</strong> (integer) The platform_property_id</p>
 <p><strong>address:</strong> (string) The address of the property as found in the database,</p>
 <h2 id="examples">Examples</h2>
+<h3 id="requests">Requests</h3>
 <p>Request body:</p>
 <pre><code class="language-console">{
     &quot;address&quot;: &quot;58, Mountain Road, Pontypandy&quot;
 }
 </code></pre>
+<p>Or curl request:</p>
+<pre><code class="language-console">curl -X 'POST' \
+  'https://land-property-platform.herokuapp.com/property_info' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  &quot;platform_property_id&quot;: 6
+}'
+</code></pre>
+<p>Or using python:</p>
+<pre><code class="language-python">import requests
+import json
+
+
+address = &quot;58, Mountain Road, Pontypandy&quot;
+json_data = json.dumps({&quot;address&quot;: address})
+response = requests.post(
+    &quot;https://land-property-platform.herokuapp.com/property_info&quot;,
+    data=json_data,
+)
+</code></pre>
+<p><code>platform_property_id</code> can be used instead of address. An example request body:</p>
+<pre><code class="language-console">{
+    &quot;platform_property_id&quot;: 6
+}
+</code></pre>
+<h3 id="response">Response</h3>
 <p>Response body:</p>
 <pre><code class="language-console">{
-    &quot;platform_property_id&quot;: 6,
-    &quot;address&quot;: &quot;58, Mountain Road, Pontypandy&quot;,
-    &quot;attributes&quot;: {
-        &quot;attribute_a&quot;: 2,
-        &quot;buy_to_let&quot;: true,
-        &quot;attribute_b&quot;: 3
-    }
+  &quot;platform_property_id&quot;: 6,
+  &quot;address&quot;: &quot;58, Mountain Road, Pontypandy&quot;,
+  &quot;attributes&quot;: {
+    &quot;attribute_a&quot;: 2,
+    &quot;buy_to_let&quot;: true,
+    &quot;attribute_b&quot;: 3
+  },
+  &quot;uprn_point_location&quot;: {
+    &quot;type&quot;: &quot;Point&quot;,
+    &quot;coordinates&quot;: [
+      257466.86,
+      326552.57
+    ]
+  },
+  &quot;extent&quot;: &quot;not in database&quot;
 }
 </code></pre>
 <p>Response schema:</p>
@@ -131,7 +171,9 @@
     &quot;attributes&quot;: {
         &quot;attribute&quot;: attribite value,
         ... : ...
-    }
+    },
+    &quot;uprn_point_location&quot;: geojson | string,
+    &quot;extent&quot;: geojson | string
 }
 </code></pre>
 <h3 id="attributes">Attributes</h3>
