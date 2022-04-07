@@ -13,6 +13,7 @@ SCHEDULES = [
 ]
 SCHEDULE_ATTRIBUTES = ["second_home", "buy_to_let"]
 
+
 def calculate_tax(
     address: str,
     value: int,
