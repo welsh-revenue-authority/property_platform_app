@@ -7,7 +7,11 @@ Find all information on a given property.
 
 ## Endpoints
 
-`https://land-property-platform.herokuapp.com/property_info`
+`https://land-property-platform.herokuapp.com/property_info`<br>
+    for publicly available data
+
+`https://land-property-platform.herokuapp.com/property_info_sensitive`<br> 
+    for sensitive data (will require API key in future phases)
 
 
 ## Parameters
@@ -62,7 +66,32 @@ response = requests.post(
 
 ### Response
 
-Response body:
+Response body for `/property_info` (sensitive attributes and land extent will 
+be excluded):
+```console
+{
+  "identifiers": {
+    "uprn": 10015806605,
+    "platform_property_id": 6,
+    "address": "58, Mountain Road, Pontypandy"
+  },
+  "attributes": {
+    "tax_zone": "north_zone",
+    "attribute_a": 2
+  },
+  "geospatial": {
+    "uprn_point_location": {
+      "type": "Point",
+      "coordinates": [
+        257466.86,
+        326552.57
+      ]
+    },
+  }
+}
+```
+
+Response body for `/property_info_sensitive` (all data):
 ```console
 {
   "identifiers": {
