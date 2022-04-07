@@ -109,7 +109,10 @@
 <p><a href="https://land-property-platform.herokuapp.com/docs#default/property_info_property_info_post">Try it out</a></p>
 <p>Find all information on a given property.</p>
 <h2 id="endpoints">Endpoints</h2>
-<p><code>https://land-property-platform.herokuapp.com/property_info</code></p>
+<p><code>https://land-property-platform.herokuapp.com/property_info</code><br>
+    for publicly available data</p>
+<p><code>https://land-property-platform.herokuapp.com/property_info_sensitive</code><br> 
+    for sensitive data (will require API key in future phases)</p>
 <h2 id="parameters">Parameters</h2>
 <p><strong>platform_property_id:</strong> (integer) The platform_property_id</p>
 <p><strong>address:</strong> (string) The address of the property as found in the database,</p>
@@ -147,7 +150,30 @@ response = requests.post(
 }
 </code></pre>
 <h3 id="response">Response</h3>
-<p>Response body:</p>
+<p>Response body for <code>/property_info</code> (sensitive attributes and land extent will 
+be excluded):</p>
+<pre><code class="language-console">{
+  &quot;identifiers&quot;: {
+    &quot;uprn&quot;: 10015806605,
+    &quot;platform_property_id&quot;: 6,
+    &quot;address&quot;: &quot;58, Mountain Road, Pontypandy&quot;
+  },
+  &quot;attributes&quot;: {
+    &quot;tax_zone&quot;: &quot;north_zone&quot;,
+    &quot;attribute_a&quot;: 2
+  },
+  &quot;geospatial&quot;: {
+    &quot;uprn_point_location&quot;: {
+      &quot;type&quot;: &quot;Point&quot;,
+      &quot;coordinates&quot;: [
+        257466.86,
+        326552.57
+      ]
+    },
+  }
+}
+</code></pre>
+<p>Response body for <code>/property_info_sensitive</code> (all data):</p>
 <pre><code class="language-console">{
   &quot;identifiers&quot;: {
     &quot;uprn&quot;: 10015806605,
