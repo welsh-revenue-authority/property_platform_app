@@ -67,6 +67,10 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#attribute-b">Attribute b</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#tax-zone">Tax zone</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cross-boarder">Cross boarder</a>
+    </li>
         </ul>
     </li>
         </ul>
@@ -145,35 +149,47 @@ response = requests.post(
 <h3 id="response">Response</h3>
 <p>Response body:</p>
 <pre><code class="language-console">{
-  &quot;platform_property_id&quot;: 6,
-  &quot;address&quot;: &quot;58, Mountain Road, Pontypandy&quot;,
+  &quot;identifiers&quot;: {
+    &quot;uprn&quot;: 10015806605,
+    &quot;platform_property_id&quot;: 6,
+    &quot;address&quot;: &quot;58, Mountain Road, Pontypandy&quot;
+  },
   &quot;attributes&quot;: {
     &quot;attribute_a&quot;: 2,
     &quot;buy_to_let&quot;: true,
-    &quot;attribute_b&quot;: 3
+    &quot;attribute_b&quot;: 3,
+    &quot;tax_zone&quot;: &quot;north_zone&quot;
   },
-  &quot;uprn_point_location&quot;: {
-    &quot;type&quot;: &quot;Point&quot;,
-    &quot;coordinates&quot;: [
-      257466.86,
-      326552.57
-    ]
-  },
-  &quot;extent&quot;: &quot;not in database&quot;
+  &quot;geospatial&quot;: {
+    &quot;uprn_point_location&quot;: {
+      &quot;type&quot;: &quot;Point&quot;,
+      &quot;coordinates&quot;: [
+        257466.86,
+        326552.57
+      ]
+    },
+    &quot;extent&quot;: &quot;not in database&quot;
+  }
 }
 </code></pre>
 <p>Response schema:</p>
 <pre><code class="language-console">{
     # Property identifiers (request will have identified one of these)
-    &quot;platform_property_id&quot;: integer,
-    &quot;address&quot;: string,
+    &quot;identifiers&quot;: {
+        &quot;uprn&quot;: integer,
+        &quot;platform_property_id&quot;: integer,
+        &quot;address&quot;: string
+    },
     # Property attributes
     &quot;attributes&quot;: {
         &quot;attribute&quot;: attribite value,
         ... : ...
     },
-    &quot;uprn_point_location&quot;: geojson | string,
-    &quot;extent&quot;: geojson | string
+    # Geospatial information
+    &quot;geospatial&quot;: {
+        &quot;uprn_point_location&quot;: geojson | string,
+        &quot;extent&quot;: geojson | string
+    }
 }
 </code></pre>
 <h3 id="attributes">Attributes</h3>
@@ -198,6 +214,15 @@ a multiplier effect on LLT.<br></p>
 <strong>Possible values:</strong> 1, 2, 3<br>
 <strong>Description:</strong> A placeholder attribute which can hold integer values and has
 a fixed addition effect on LLT.<br></p>
+<h4 id="tax-zone">Tax zone</h4>
+<p><strong>Attribute name:</strong> "tax_zone"<br>
+<strong>Possible values:</strong> "north_zone", "south_zone"<br>
+<strong>Description:</strong> The tax zone that the property resides in.<br></p>
+<h4 id="cross-boarder">Cross boarder</h4>
+<p><strong>Attribute name:</strong> "cross_boarder"<br>
+<strong>Possible values:</strong> true<br>
+<strong>Description:</strong> The property has been flagged as crossing the Wales - England
+boarder.<br></p>
               
             </div>
           </div><footer>
