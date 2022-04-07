@@ -100,25 +100,25 @@ def _generate_date_in_past() -> str:
 
 def generate_address():
     number = random.randint(1, 200)
-    street = random.choice([
-        "England Street",
-        "England Lane",
-        "England Drive"
-    ])
+    street = random.choice(["England Street", "England Lane", "England Drive"])
     return f"{number}, {street}, Upper Leadworth"
 
 
 def insert_property(address):
-   sql_command(f"""
+    sql_command(
+        f"""
             INSERT INTO register.properties(address) VALUES
                 ('{address}');
-        """)
-   platform_property_id = sql_query(f"""
+        """
+    )
+    platform_property_id = sql_query(
+        f"""
                 SELECT platform_property_id
                 FROM register.properties
                 WHERE address = '{address}';
-           """)
-   return platform_property_id[0][0]
+           """
+    )
+    return platform_property_id[0][0]
 
 
 def insert_point(platform_property_id, feature):
@@ -126,11 +126,11 @@ def insert_point(platform_property_id, feature):
 
     geometry = feature["geometry"]
     geom_text = f"{geometry['type'].upper()}({geometry['coordinates'][0]} {geometry['coordinates'][1]})"
-    
-    command = (f"""
+
+    command = f"""
                 INSERT INTO register.points(uprn, platform_property_id, geom) VALUES
                     ({uprn}, {platform_property_id}, ST_GeomFromText('{geom_text}', 27700));
-            """)
+            """
     print(command)
     sql_command(command)
 
@@ -138,18 +138,18 @@ def insert_point(platform_property_id, feature):
 def add_english_uprns():
     with open("../LTT_calculation/fiction/English_UPRN.geojson", "r") as f:
         j = json.load(f)
-    
+
     features = j["features"]
     addresses = []
     while len(addresses) < 64:
         address = generate_address()
         if address not in addresses:
             addresses.append(address)
-    
+
     for feature, address in zip(features, addresses):
         platform_property_id = insert_property(address)
         insert_point(platform_property_id, feature)
-    
+
 
 def add_tax_zone_attributes():
     """
@@ -160,17 +160,20 @@ def add_tax_zone_attributes():
     fictional data set. Rewrite for alpha / production.
     """
     # get list od platform_property_id s
-    platform_property_ids = sql_query("""
+    platform_property_ids = sql_query(
+        """
                 SELECT platform_property_id
                 FROM register.properties;
-            """)
+            """
+    )
     platform_property_ids = [row[0] for row in platform_property_ids]
-    
+
     # loop through list
     for platform_property_id in platform_property_ids:
-    
+
         # Find which tax zone it's in
-        tax_zone = sql_query(f"""
+        tax_zone = sql_query(
+            f"""
                     SELECT
                         CASE
                             -- When north_tax_zone containts point
@@ -191,12 +194,13 @@ def add_tax_zone_attributes():
                                 ) THEN 'south_zone'
                             ELSE 'not in registered tax zone'
                         END AS tax_zone
-                """)[0][0]
+                """
+        )[0][0]
         print(f"platform_property_id {platform_property_id}: {tax_zone}")
-        
+
         # Add as attribute
         add_attribute(
-                platform_property_id=platform_property_id,
-                attribute_type='tax_zone',
-                text_value=tax_zone
-            )
+            platform_property_id=platform_property_id,
+            attribute_type="tax_zone",
+            text_value=tax_zone,
+        )
