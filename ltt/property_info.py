@@ -41,9 +41,13 @@ def get_property_info(
 
     # Create return dictionary
     property_info = {
-        "platform_property_id": result[0][0],
-        "address": result[0][5],
-        "attributes": {}
+            "identifiers": {
+                "uprn": result[0][6],
+                "platform_property_id": result[0][0],
+        "address": result[0][5]
+        },
+        "attributes": {},
+        "geospatial": {}
     }
 
     # Add geojsons seperately and handle empty values
@@ -61,8 +65,8 @@ def get_property_info(
     else:
         extent = "not in database"
 
-    property_info.update({"uprn_point_location": uprn_point_location})
-    property_info.update({"extent": extent})
+    property_info["geospatial"].update({"uprn_point_location": uprn_point_location})
+    property_info["geospatial"].update({"extent": extent})
 
     # Add attributes
     for row in result:
