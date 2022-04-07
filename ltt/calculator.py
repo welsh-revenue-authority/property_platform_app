@@ -6,14 +6,12 @@ from typing import Dict, Optional, Union
 from ltt.db_connections import sql_query
 from ltt.data_object_models import Attributes
 
-
 SCHEDULES = [
     "rates_main_residential",
     "rates_higher_residential",
     "rates_higher_plus_residential",
 ]
 SCHEDULE_ATTRIBUTES = ["second_home", "buy_to_let"]
-
 
 def calculate_tax(
     address: str,

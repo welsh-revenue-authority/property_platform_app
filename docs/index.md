@@ -1,14 +1,6 @@
 # Welcome to Documentation for the Land and Property Platform
 
-This is the documentation for the proof-of-concept API calls.
-
-To see how the platform might look, head to 
-[land-property-platform.herokuapp.com](https://land-property-platform.herokuapp.com).
-Use these pages for reference on the PoC APIs if you are developing them 
-further.
-
-__\*\*All data is fake\*\*__<br>
-__\*\*Not all future functionality is included\*\*__
+This is a **proof of concept** created by the Welsh Revenue Authority. It contains synthetic data and does not cover the whole of Wales. [Find out more about what data is included in the proof of concept](https://land-property-platform.herokuapp.com/poc-data).
 
 ## Available APIs
 
