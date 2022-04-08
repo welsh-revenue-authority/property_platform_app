@@ -147,6 +147,14 @@ def is_it_in_wales(uprn: Uprn):
     return {"in_wales": in_wales(uprn.uprn)}
 
 
+@app.post("/tax_zones", tags=["tax_zones"])
+def tax_zones():
+    """
+    Returns a list of tax zones with their associated geographies
+    """
+    return {"status": "API not yet available"}
+
+
 # @app.post("/sold_price")
 # def sold_price():
 #     """
