@@ -17,7 +17,7 @@ app = FastAPI(
     title="Land and property platform",
     description=docs.DESCRIPTION,
     openapi_tags=docs.TAGS_METADATA,
-    contact=docs.CONTACT
+    contact=docs.CONTACT,
 )
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
@@ -28,21 +28,30 @@ templates = Jinja2Templates(directory="templates")
 def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-@app.get("/getting-started", response_class=HTMLResponse, include_in_schema=False)
+
+@app.get(
+    "/getting-started", response_class=HTMLResponse, include_in_schema=False
+)
 def pricing(request: Request):
-    return templates.TemplateResponse("getting-started.html", {"request": request})
+    return templates.TemplateResponse(
+        "getting-started.html", {"request": request}
+    )
+
 
 @app.get("/data", response_class=HTMLResponse, include_in_schema=False)
 def data(request: Request):
     return templates.TemplateResponse("data.html", {"request": request})
 
+
 @app.get("/analysts", response_class=HTMLResponse, include_in_schema=False)
 def analysts(request: Request):
     return templates.TemplateResponse("analysts.html", {"request": request})
 
+
 @app.get("/features", response_class=HTMLResponse, include_in_schema=False)
 def features(request: Request):
     return templates.TemplateResponse("features.html", {"request": request})
+
 
 @app.get("/roadmap", response_class=HTMLResponse, include_in_schema=False)
 def roadmap(request: Request):
@@ -77,14 +86,14 @@ def pricing(request: Request):
         "getting-started.html", {"request": request}
     )
 
+
 @app.get(
     "/robots.txt", response_class=PlainTextResponse, include_in_schema=False
 )
 def robots(request: Request):
-    with open('static/robots.txt') as f:
+    with open("static/robots.txt") as f:
         text = f.read()
     return text
-
 
 
 # Test get API
@@ -127,7 +136,8 @@ def property_info(property_info_request: PropertyInfoRequest):
     User groups: local authorities (full access), public (restricted access)
     """
     if not (
-        property_info_request.platform_property_id or property_info_request.address
+        property_info_request.platform_property_id
+        or property_info_request.address
     ):
         return {
             "error": "one from platform_property_id or address must be provided"
@@ -136,6 +146,30 @@ def property_info(property_info_request: PropertyInfoRequest):
     return get_property_info(
         platform_property_id=property_info_request.platform_property_id,
         address=property_info_request.address,
+        privacy_level=1,
+    )
+
+
+@app.post("/property_info_sensitive", tags=["property_info_sensitive"])
+def property_info_sensitive(property_info_request: PropertyInfoRequest):
+    """
+    Given an identifier, property information is returned. Some user groups may
+    get access to all property data and some a restricted set.
+
+    User groups: local authorities (full access), public (restricted access)
+    """
+    if not (
+        property_info_request.platform_property_id
+        or property_info_request.address
+    ):
+        return {
+            "error": "one from platform_property_id or address must be provided"
+        }
+
+    return get_property_info(
+        platform_property_id=property_info_request.platform_property_id,
+        address=property_info_request.address,
+        privacy_level=2,
     )
 
 
@@ -161,29 +195,29 @@ def tax_zones():
 #     Returns information on last sold price. May return multiple results as WRA
 #     get this info instantly on transaction but land registry have a lag of
 #     several weeks (return both?).
-# 
+#
 #     User groups: estate agenst, public
 #     """
 #     return {"status": "API not yet available"}
-# 
-# 
+#
+#
 # @app.post("/property_tax_band")
 # def property_tax_band():
 #     """
 #     Given an identifier, the properties tax band is returned. Restricted
 #     access.
-# 
+#
 #     User groups: local authorities
 #     """
 #     return {"status": "API not yet available"}
-# 
-# 
+#
+#
 # @app.post("/tax_zone")
 # def tax_zone():
 #     """
 #     Given a property identifier, the tax zone in which the property resides is
 #     returned.
-# 
+#
 #     User groups: all
 #     """
 #     return {"status": "API not yet available"}

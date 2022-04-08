@@ -6,12 +6,18 @@ NB: This is not part of Mkdocs and should not be referenced in mkdocs.yml
 
 DESCRIPTION = """
 
-This is a proof of concept created by the Welsh Revenue Authority. It contains synthetic data and does not cover the whole of Wales. [Find out more about what data is included in the proof of concept](https://land-property-platform.herokuapp.com/poc-data).
+This is a proof of concept created by the Welsh Revenue Authority. It contains 
+synthetic data and does not cover the whole of Wales. [Find out more about what 
+data is included in the proof of concept](https://land-property-platform.herokuapp.com/poc-data).
 
 """
 TAGS_METADATA = [
         {
             "name": "property_info",
+            "description": "get all public information on a property"
+        },
+        {
+            "name": "property_info_sensitive",
             "description": "get all information on a property"
         },
         {

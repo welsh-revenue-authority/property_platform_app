@@ -7,7 +7,11 @@ Find all information on a given property.
 
 ## Endpoints
 
-`https://land-property-platform.herokuapp.com/property_info`
+`https://land-property-platform.herokuapp.com/property_info`<br>
+    for publicly available data
+
+`https://land-property-platform.herokuapp.com/property_info_sensitive`<br> 
+    for sensitive data (will require API key in future phases)
 
 
 ## Parameters
@@ -62,24 +66,55 @@ response = requests.post(
 
 ### Response
 
-Response body:
+Response body for `/property_info` (sensitive attributes and land extent will 
+be excluded):
 ```console
 {
-  "platform_property_id": 6,
-  "address": "58, Mountain Road, Pontypandy",
+  "identifiers": {
+    "uprn": 10015806605,
+    "platform_property_id": 6,
+    "address": "58, Mountain Road, Pontypandy"
+  },
+  "attributes": {
+    "tax_zone": "north_zone",
+    "attribute_a": 2
+  },
+  "geospatial": {
+    "uprn_point_location": {
+      "type": "Point",
+      "coordinates": [
+        257466.86,
+        326552.57
+      ]
+    },
+  }
+}
+```
+
+Response body for `/property_info_sensitive` (all data):
+```console
+{
+  "identifiers": {
+    "uprn": 10015806605,
+    "platform_property_id": 6,
+    "address": "58, Mountain Road, Pontypandy"
+  },
   "attributes": {
     "attribute_a": 2,
     "buy_to_let": true,
-    "attribute_b": 3
+    "attribute_b": 3,
+    "tax_zone": "north_zone"
   },
-  "uprn_point_location": {
-    "type": "Point",
-    "coordinates": [
-      257466.86,
-      326552.57
-    ]
-  },
-  "extent": "not in database"
+  "geospatial": {
+    "uprn_point_location": {
+      "type": "Point",
+      "coordinates": [
+        257466.86,
+        326552.57
+      ]
+    },
+    "extent": "not in database"
+  }
 }
 ```
 
@@ -88,15 +123,21 @@ Response schema:
 ```console
 {
     # Property identifiers (request will have identified one of these)
-    "platform_property_id": integer,
-    "address": string,
+    "identifiers": {
+        "uprn": integer,
+        "platform_property_id": integer,
+        "address": string
+    },
     # Property attributes
     "attributes": {
         "attribute": attribite value,
         ... : ...
     },
-    "uprn_point_location": geojson | string,
-    "extent": geojson | string
+    # Geospatial information
+    "geospatial": {
+        "uprn_point_location": geojson | string,
+        "extent": geojson | string
+    }
 }
 ```
 
@@ -127,3 +168,15 @@ __Attribute name:__ "attribute_b"<br>
 __Possible values:__ 1, 2, 3<br>
 __Description:__ A placeholder attribute which can hold integer values and has
 a fixed addition effect on LLT.<br>
+
+#### Tax zone
+__Attribute name:__ "tax_zone"<br>
+__Possible values:__ "north_zone", "south_zone"<br>
+__Description:__ The tax zone that the property resides in.<br>
+
+#### Cross boarder
+__Attribute name:__ "cross_boarder"<br>
+__Possible values:__ true<br>
+__Description:__ The property has been flagged as crossing the Wales - England
+boarder.<br>
+
