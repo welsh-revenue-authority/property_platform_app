@@ -101,7 +101,7 @@
 <p><a href="https://land-property-platform.herokuapp.com/docs#/tax_zones/tax_zones_tax_zones_post">Try it out</a></p>
 <p>Find out which LLTT tax zone(s) a property resides in.</p>
 <h2 id="endpoints">Endpoints</h2>
-<p><code>https://land-property-platform.herokuapp.com/tax_zone</code></p>
+<p><code>https://land-property-platform.herokuapp.com/tax_zones</code></p>
 <h2 id="parameters">Parameters</h2>
 <p><strong>address:</strong> (string) The address of the property as found in the database</p>
 <p><strong>use_polygon:</strong> (string, optional) If true then the search will use the 
@@ -117,7 +117,7 @@ examples below.</p>
 </code></pre>
 <p>Or curl request:</p>
 <pre><code class="language-console">curl -X 'POST' \
-  'https://land-property-platform.herokuapp.com/tax_zone' \
+  'https://land-property-platform.herokuapp.com/tax_zones' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -132,7 +132,7 @@ import json
 address = &quot;58, Mountain Road, Pontypandy&quot;
 json_data = json.dumps({&quot;address&quot;: address})
 response = requests.post(
-    &quot;https://land-property-platform.herokuapp.com/tax_zone&quot;,
+    &quot;https://land-property-platform.herokuapp.com/tax_zones&quot;,
     data=json_data,
 )
 </code></pre>
