@@ -104,7 +104,7 @@ def robots(request: Request):
 
 # Test post api
 @app.post("/LLTT_calculator", tags=["LLTT_calculator"])
-def test_api(property_info: Union[PropertyInfo, List[PropertyInfo]]):
+def lltt_calculator(property_info: Union[PropertyInfo, List[PropertyInfo]]):
     """
     Returns localised LTT tax for each set of property infos
     """
@@ -180,7 +180,7 @@ def is_it_in_wales(uprn: Uprn):
     return {"in_wales": in_wales(uprn.uprn)}
 
 
-@app.post("/tax_zones", tags=["tax_zones"])
+@app.post("/tax_zones", tags=["tax_zone"])
 def tax_zones(address: Address):
     """
     Returns a set of tax zones in which the property resides and to what 

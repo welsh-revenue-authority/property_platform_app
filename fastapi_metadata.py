@@ -27,6 +27,10 @@ TAGS_METADATA = [
         {
             "name": "is_it_in_wales",
             "description": "find out if a property (UPRN) is in Wales"
+        },
+        {
+            "name": "tax_zone",
+            "description": "find out which LLTT tax zone(s) a property is within"
         }
         ]
 CONTACT = {
