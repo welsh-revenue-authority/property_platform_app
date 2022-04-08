@@ -180,7 +180,7 @@ def is_it_in_wales(uprn: Uprn):
     return {"in_wales": in_wales(uprn.uprn)}
 
 
-@app.post("/tax_zones", tags=["tax_zone"])
+@app.post("/tax_zones", tags=["tax_zones"])
 def tax_zones(address: Address):
     """
     Returns a set of tax zones in which the property resides and to what 

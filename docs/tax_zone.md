@@ -7,7 +7,7 @@ Find out which LLTT tax zone(s) a property resides in.
 
 ## Endpoints
 
-`https://land-property-platform.herokuapp.com/tax_zone`
+`https://land-property-platform.herokuapp.com/tax_zones`
 
 
 ## Parameters
@@ -34,7 +34,7 @@ Request body:
 Or curl request:
 ```console
 curl -X 'POST' \
-  'https://land-property-platform.herokuapp.com/tax_zone' \
+  'https://land-property-platform.herokuapp.com/tax_zones' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -51,7 +51,7 @@ import json
 address = "58, Mountain Road, Pontypandy"
 json_data = json.dumps({"address": address})
 response = requests.post(
-    "https://land-property-platform.herokuapp.com/tax_zone",
+    "https://land-property-platform.herokuapp.com/tax_zones",
     data=json_data,
 )
 ```
