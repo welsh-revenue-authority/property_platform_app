@@ -103,10 +103,10 @@ def robots(request: Request):
 
 
 # Test post api
-@app.post("/LTT_tax", tags=["LTT_tax"])
+@app.post("/LLTT_calculator", tags=["LLTT_calculator"])
 def test_api(property_info: Union[PropertyInfo, List[PropertyInfo]]):
     """
-    Returns LTT tax for each set of property infos
+    Returns localised LTT tax for each set of property infos
     """
 
     # If only a single set of info is supplied turn into list so all can be

@@ -2,5 +2,6 @@ site_name: Land and property platform
 nav:
   - Home: index.md
   - Property Information: property_info.md
+  - Localised LTT Calculator: lltt_calculator.md
   - Is it in Wales?: is_it_in_wales.md
 theme: readthedocs

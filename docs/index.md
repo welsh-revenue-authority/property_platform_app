@@ -5,7 +5,7 @@ This is a **proof of concept** created by the Welsh Revenue Authority. It contai
 ## Available APIs
 
 * Localised land transaction tax calculator at 
-[https://land-property-platform.herokuapp.com/LTT_tax](https://land-property-platform.herokuapp.com/LTT_tax)
+[https://land-property-platform.herokuapp.com/LLTT_tax](https://land-property-platform.herokuapp.com/LLTT_tax)
 * Property information at 
 [https://land-property-platform.herokuapp.com/property_info](https://land-property-platform.herokuapp.com/property_info)
 

@@ -21,7 +21,7 @@ TAGS_METADATA = [
             "description": "get all information on a property"
         },
         {
-            "name": "LTT_tax",
+            "name": "LLTT_calculator",
             "description": "calculate localised land transaction tax"
         },
         {
