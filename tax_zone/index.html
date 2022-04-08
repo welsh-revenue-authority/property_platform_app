@@ -5,15 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Is it in Wales? - Land and property platform</title>
+    <title>Tax Zone Lookup - Land and property platform</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Is it in Wales?";
-        var mkdocs_page_input_path = "is_it_in_wales.md";
+        var mkdocs_page_name = "Tax Zone Lookup";
+        var mkdocs_page_input_path = "tax_zone.md";
         var mkdocs_page_url = null;
       </script>
     
@@ -52,8 +52,12 @@
                 <li class="toctree-l1"><a class="reference internal" href="../lltt_calculator/">Localised LTT Calculator</a>
                 </li>
               </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../is_it_in_wales/">Is it in Wales?</a>
+                </li>
+              </ul>
               <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">Is it in Wales?</a>
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Tax Zone Lookup</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#endpoints">Endpoints</a>
     </li>
@@ -70,10 +74,6 @@
     </ul>
                 </li>
               </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../tax_zone/">Tax Zone Lookup</a>
-                </li>
-              </ul>
       </div>
     </div>
     </nav>
@@ -87,7 +87,7 @@
       <div class="wy-nav-content">
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li><li>Is it in Wales?</li>
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li><li>Tax Zone Lookup</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -97,28 +97,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="is-it-in-wales">Is it in Wales?</h1>
-<p><a href="https://land-property-platform.herokuapp.com/docs#/default/is_it_in_wales_is_it_in_wales_post">Try it out</a></p>
-<p>Determine if a property is in wales.</p>
+                <h1 id="tax-zone-lookup-api">Tax Zone Lookup API</h1>
+<p><a href="https://land-property-platform.herokuapp.com/docs#/tax_zones/tax_zones_tax_zones_post">Try it out</a></p>
+<p>Find out which LLTT tax zone(s) a property resides in.</p>
 <h2 id="endpoints">Endpoints</h2>
-<p><code>https://land-property-platform.herokuapp.com/is_it_in_wales</code></p>
+<p><code>https://land-property-platform.herokuapp.com/tax_zone</code></p>
 <h2 id="parameters">Parameters</h2>
-<p><strong>uprn:</strong> (integer) The UPRN of the property (don't know it? search 
-<a href="https://www.findmyaddress.co.uk/search">here</a>)</p>
+<p><strong>address:</strong> (string) The address of the property as found in the database</p>
+<p><strong>use_polygon:</strong> (string, optional) If true then the search will use the 
+polygon associated with the address to search. This may reside in multiple tax
+zones. Note: for this PoC only 3 addresses have associated polygons. Use 
+examples below.</p>
 <h2 id="examples">Examples</h2>
 <h3 id="requests">Requests</h3>
 <p>Request body:</p>
 <pre><code class="language-console">{
-    &quot;uprn&quot;: 10015308931
+    &quot;address&quot;: &quot;58, Mountain Road, Pontypandy&quot;
 }
 </code></pre>
 <p>Or curl request:</p>
 <pre><code class="language-console">curl -X 'POST' \
-  'https://land-property-platform.herokuapp.com/is_it_in_wales' \
+  'https://land-property-platform.herokuapp.com/tax_zone' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
-  &quot;uprn&quot;: 10015308931
+  &quot;address&quot;: &quot;58, Mountain Road, Pontypandy&quot;
 }'
 </code></pre>
 <p>Or using python:</p>
@@ -126,37 +129,41 @@
 import json
 
 
-uprn = 10015308931
-json_data = json.dumps({&quot;uprn&quot;: uprn})
+address = &quot;58, Mountain Road, Pontypandy&quot;
+json_data = json.dumps({&quot;address&quot;: address})
 response = requests.post(
-    &quot;https://land-property-platform.herokuapp.com/is_it_in_wales&quot;,
+    &quot;https://land-property-platform.herokuapp.com/tax_zone&quot;,
     data=json_data,
 )
 </code></pre>
+<p>Or if search by land extent is required:</p>
+<pre><code class="language-console">{
+    &quot;address&quot;: &quot;1, Pontypandy&quot;,
+    &quot;use_polygon&quot;: true
+}
+</code></pre>
 <h3 id="response">Response</h3>
-<p>Response body example:</p>
+<p>Response body:</p>
 <pre><code class="language-console">{
-    &quot;in_wales&quot;: &quot;true&quot;
+  &quot;north_zone&quot;: 1
 }
 </code></pre>
-<p>Response body schema:</p>
+<p>Or with use_polygon set to true:</p>
 <pre><code class="language-console">{
-    &quot;in_wales&quot;: string
+  &quot;north_zone&quot;: 0.8522164045055316,
+  &quot;south_zone&quot;: 0.14778359549447
 }
 </code></pre>
-<p>Possible "in_wales" values:</p>
-<ul>
-<li>"true" -- The property is in Wales</li>
-<li>"false" -- The property is not in Wales</li>
-<li>"partially" -- The property has been manually flagges as partially in Wales
-and partially in England</li>
-</ul>
+<p>Response schema:</p>
+<pre><code class="language-console">{
+    tax_zone: proportion of property within
+}
+</code></pre>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../lltt_calculator/" class="btn btn-neutral float-left" title="Localised LTT Calculator"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../tax_zone/" class="btn btn-neutral float-right" title="Tax Zone Lookup">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../is_it_in_wales/" class="btn btn-neutral float-left" title="Is it in Wales?"><span class="icon icon-circle-arrow-left"></span> Previous</a>
     </div>
 
   <hr/>
@@ -179,10 +186,8 @@ and partially in England</li>
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../lltt_calculator/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../is_it_in_wales/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
-    
-      <span><a href="../tax_zone/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
