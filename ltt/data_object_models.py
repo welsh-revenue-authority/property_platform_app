@@ -33,6 +33,10 @@ class PropertyInfoRequest(BaseModel):
 class Uprn(BaseModel):
     uprn: int
 
+class Address(BaseModel):
+    address: str
+    use_polygon: bool = False
+
 
 # Database entity models
 class Attribute(BaseModel):

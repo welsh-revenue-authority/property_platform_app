@@ -4,4 +4,5 @@ nav:
   - Property Information: property_info.md
   - Localised LTT Calculator: lltt_calculator.md
   - Is it in Wales?: is_it_in_wales.md
+  - Tax Zone Lookup: tax_zone.md
 theme: readthedocs

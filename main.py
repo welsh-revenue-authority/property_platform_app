@@ -5,8 +5,8 @@ from fastapi.responses import HTMLResponse, PlainTextResponse
 from fastapi.templating import Jinja2Templates
 
 # from fastapi.security import HTTPBasic, HTTPBasicCredentials
-from ltt.calculator import calculate_tax
-from ltt.data_object_models import PropertyInfo, PropertyInfoRequest, Uprn
+from ltt.calculator import calculate_tax, tax_zone_lookup, tax_zone_lookup_polygon
+from ltt.data_object_models import PropertyInfo, PropertyInfoRequest, Uprn, Address
 from ltt.property_info import get_property_info
 from ltt.location_checks import in_wales
 import fastapi_metadata as docs
@@ -181,11 +181,20 @@ def is_it_in_wales(uprn: Uprn):
 
 
 @app.post("/tax_zones", tags=["tax_zones"])
-def tax_zones():
+def tax_zones(address: Address):
     """
-    Returns a list of tax zones with their associated geographies
+    Returns a set of tax zones in which the property resides and to what 
+    proportion.
+
+    Default uses point location lookup or set use_polygon to true to search
+    by land extent.
     """
-    return {"status": "API not yet available"}
+    if address.use_polygon:
+        lookup_func = tax_zone_lookup_polygon
+    else:
+        lookup_func = tax_zone_lookup
+
+    return lookup_func(address.address)
 
 
 # @app.post("/sold_price")
