@@ -133,7 +133,7 @@ def property_info(property_info_request: PropertyInfoRequest):
     Given an identifier, property information is returned. Some user groups may
     get access to all property data and some a restricted set.
 
-    User groups: local authorities (full access), public (restricted access)
+    User groups: Welsh public sector, public
     """
     if not (
         property_info_request.platform_property_id
@@ -149,14 +149,13 @@ def property_info(property_info_request: PropertyInfoRequest):
         privacy_level=1,
     )
 
-
 @app.post("/property_info_sensitive", tags=["property_info_sensitive"])
 def property_info_sensitive(property_info_request: PropertyInfoRequest):
     """
     Given an identifier, property information is returned. Some user groups may
     get access to all property data and some a restricted set.
 
-    User groups: local authorities (full access), public (restricted access)
+    User groups: Welsh public sector
     """
     if not (
         property_info_request.platform_property_id
@@ -179,6 +178,14 @@ def is_it_in_wales(uprn: Uprn):
     Returns if a UPRN is in wales.
     """
     return {"in_wales": in_wales(uprn.uprn)}
+
+
+@app.post("/tax_zones", tags=["tax_zones"])
+def tax_zones():
+    """
+    Returns a list of tax zones with their associated geographies
+    """
+    return {"status": "API not yet available"}
 
 
 # @app.post("/sold_price")
