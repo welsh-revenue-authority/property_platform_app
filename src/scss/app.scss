@@ -1,0 +1,70 @@
+.secondary-h1-header {
+  margin: 0;
+  padding-left:0;
+}
+
+.app-hero {
+  background-color:rgb(241,241,241);
+}
+.app-hero h1 {
+  color:#aa1111;
+}
+
+.app-hero .lead {
+  color:rgb(31,31,31);
+}
+
+.app-hero img {
+  margin-top:40px;
+}
+
+.nav-link a {
+  color: #00ff00;
+}
+
+#platform-menu a {
+  color:white;
+  padding: 0em 1em 0em 0em;
+}
+
+img.figure {
+  border:solid 1px #ccc;
+  padding:10px;
+  max-width:600px
+}
+
+img.product-image {
+  margin-top:10px;
+}
+
+.poc-highlight{
+    margin-top:30px;
+}
+.poc-highlight span.btn.btn--beta.btn--light, .poc-highlight span.btn.btn--beta.btn--light:hover {
+  background-color:#ffd530;
+  color:black;
+}
+
+.lead {
+  color:#1f1f1f;
+}
+
+.product-features dt, .product-features dd {
+  font-size:18px;
+  padding-left:60px;
+}
+
+.product-features dd {
+  margin-bottom:10px;
+  background-image:url(../images/tick.svg);
+  background-repeat: no-repeat;
+  background-size: 40px 40px;
+  background-position: top left;
+  padding-top:5px;
+  padding-bottom:10px;
+}
+
+a.poc-link:hover {
+  text-decoration:line-through;
+}
+  
