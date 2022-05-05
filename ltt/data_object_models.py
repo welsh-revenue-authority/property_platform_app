@@ -33,6 +33,7 @@ class PropertyInfoRequest(BaseModel):
 class Uprn(BaseModel):
     uprn: int
 
+
 class Address(BaseModel):
     address: str
     use_polygon: bool = False

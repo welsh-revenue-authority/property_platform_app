@@ -129,9 +129,7 @@ def _min_schedule_idx(attribute: str, atr_value: int) -> int:
     return min_schedule_idx
 
 
-def _apply_schedule(
-    schedule: str, tax_zones: Dict[str, float], value: float
-) -> float:
+def _apply_schedule(schedule: str, tax_zones: Dict[str, float], value: float) -> float:
     """
     Returns the tax (before modifiers applied) from schedule.
 

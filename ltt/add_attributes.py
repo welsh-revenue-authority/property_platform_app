@@ -37,9 +37,7 @@ def _add_attribute(attribute: Attribute, debug: Optional[bool] = False):
                 attribute.attribute_type == existing_attribute.attribute_type
                 and attribute.value == existing_attribute.value
             ):
-                print(
-                    "Attribute for property already exists. No records changed"
-                )
+                print("Attribute for property already exists. No records changed")
                 return
 
             # If value is different close old attribute (valid_to_date yesterday)
@@ -89,9 +87,7 @@ def _get_attribute(attribute: Attribute) -> Optional[Attribute]:
     )
 
 
-def _close_attribute(
-    attribute: Attribute, verbose: Optional[bool] = True
-) -> None:
+def _close_attribute(attribute: Attribute, verbose: Optional[bool] = True) -> None:
     sql_command(
         f"""
         UPDATE register.attributes 
@@ -166,8 +162,7 @@ def _collect_values(attribute: Attribute) -> str:
 
     # Convert values to SQL format
     fields = [
-        f"'{field}'" if isinstance(field, str) else field
-        for field in not_null_fields
+        f"'{field}'" if isinstance(field, str) else field for field in not_null_fields
     ]
     # changing to string.lower() will catch bools and numeric
     fields = [str(field).lower() for field in fields]
@@ -177,6 +172,4 @@ def _collect_values(attribute: Attribute) -> str:
 
 
 if __name__ == "__main__":
-    add_attribute(
-        platform_property_id=3, attribute_type="attribute_a", numeric_value=2
-    )
+    add_attribute(platform_property_id=3, attribute_type="attribute_a", numeric_value=2)
