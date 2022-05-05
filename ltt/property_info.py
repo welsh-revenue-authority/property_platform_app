@@ -69,9 +69,7 @@ def get_property_info(
     else:
         extent = "not in database"
 
-    property_info["geospatial"].update(
-        {"uprn_point_location": uprn_point_location}
-    )
+    property_info["geospatial"].update({"uprn_point_location": uprn_point_location})
     if privacy_level > 1:
         property_info["geospatial"].update({"extent": extent})
 
@@ -84,9 +82,7 @@ def get_property_info(
             text_value=row[3],
             numeric_value=float(row[4]) if row[4] else None,
         )
-        property_info["attributes"].update(
-            {attribute.attribute_type: attribute.value}
-        )
+        property_info["attributes"].update({attribute.attribute_type: attribute.value})
 
     return property_info
 

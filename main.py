@@ -29,13 +29,9 @@ def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
-@app.get(
-    "/getting-started", response_class=HTMLResponse, include_in_schema=False
-)
+@app.get("/getting-started", response_class=HTMLResponse, include_in_schema=False)
 def pricing(request: Request):
-    return templates.TemplateResponse(
-        "getting-started.html", {"request": request}
-    )
+    return templates.TemplateResponse("getting-started.html", {"request": request})
 
 
 @app.get("/data", response_class=HTMLResponse, include_in_schema=False)
@@ -78,18 +74,12 @@ def apidocs(request: Request):
     return templates.TemplateResponse("apidocs.html", {"request": request})
 
 
-@app.get(
-    "/getting-started", response_class=HTMLResponse, include_in_schema=False
-)
+@app.get("/getting-started", response_class=HTMLResponse, include_in_schema=False)
 def pricing(request: Request):
-    return templates.TemplateResponse(
-        "getting-started.html", {"request": request}
-    )
+    return templates.TemplateResponse("getting-started.html", {"request": request})
 
 
-@app.get(
-    "/robots.txt", response_class=PlainTextResponse, include_in_schema=False
-)
+@app.get("/robots.txt", response_class=PlainTextResponse, include_in_schema=False)
 def robots(request: Request):
     with open("static/robots.txt") as f:
         text = f.read()
@@ -136,18 +126,16 @@ def property_info(property_info_request: PropertyInfoRequest):
     User groups: Welsh public sector, public
     """
     if not (
-        property_info_request.platform_property_id
-        or property_info_request.address
+        property_info_request.platform_property_id or property_info_request.address
     ):
-        return {
-            "error": "one from platform_property_id or address must be provided"
-        }
+        return {"error": "one from platform_property_id or address must be provided"}
 
     return get_property_info(
         platform_property_id=property_info_request.platform_property_id,
         address=property_info_request.address,
         privacy_level=1,
     )
+
 
 @app.post("/property_info_sensitive", tags=["property_info_sensitive"])
 def property_info_sensitive(property_info_request: PropertyInfoRequest):
@@ -158,12 +146,9 @@ def property_info_sensitive(property_info_request: PropertyInfoRequest):
     User groups: Welsh public sector
     """
     if not (
-        property_info_request.platform_property_id
-        or property_info_request.address
+        property_info_request.platform_property_id or property_info_request.address
     ):
-        return {
-            "error": "one from platform_property_id or address must be provided"
-        }
+        return {"error": "one from platform_property_id or address must be provided"}
 
     return get_property_info(
         platform_property_id=property_info_request.platform_property_id,
@@ -183,7 +168,7 @@ def is_it_in_wales(uprn: Uprn):
 @app.post("/tax_zones", tags=["tax_zones"])
 def tax_zones(address: Address):
     """
-    Returns a set of tax zones in which the property resides and to what 
+    Returns a set of tax zones in which the property resides and to what
     proportion.
 
     Default uses point location lookup or set use_polygon to true to search
