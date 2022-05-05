@@ -22,7 +22,7 @@ We recommend working in a virtual environment.
 
 Install the python dependencies
 ```
-pip install -r requirements.txt
+make init
 ```
 
 
@@ -30,7 +30,7 @@ pip install -r requirements.txt
 
 Run the app with
 ```
-uvicorn main:app --reload
+make run
 ```
 
 ## Documentations
