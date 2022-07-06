@@ -36,7 +36,7 @@ jobs:
             ${{ runner.os }}-pip-
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: make init
 
       # Optional: Add a step to run tests here (PyTest, Django test suites, etc.)
 
