@@ -42,6 +42,16 @@ jobs:
            pip install -r requirements.txt
 
       # Optional: Add a step to run tests here (PyTest, Django test suites, etc.)
+      
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_HEROKU_PGDATABASE: ${{ secrets.HEROKU_PGDATABASE }}
+          envkey_HEROKU_PGHOST: ${{ secrets.HEROKU_PGHOST }}
+          envkey_HEROKU_PGPASSWORD: ${{ secrets.PGPASSWORD }}
+          envkey_HEROKU_PGUSERNAME: ${{ secrets.PGUSERNAME }}
+          file_name: .env
+          fail_on_empty: true
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v3
