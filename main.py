@@ -1,5 +1,7 @@
 from typing import Union, List
-from fastapi import FastAPI, Request
+import re
+
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, PlainTextResponse
 from fastapi.templating import Jinja2Templates
@@ -9,6 +11,7 @@ from ltt.calculator import calculate_tax, tax_zone_lookup, tax_zone_lookup_polyg
 from ltt.data_object_models import PropertyInfo, PropertyInfoRequest, Uprn, Address
 from ltt.property_info import get_property_info
 from ltt.location_checks import in_wales
+from ltt.ltt_rate import land_transaction_tax_rate_query
 import fastapi_metadata as docs
 
 
@@ -22,6 +25,7 @@ app = FastAPI(
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 # security = HTTPBasic()
+alphaNumeric = re.compile(r'[A-Za-z0-9]+')
 
 # Routes
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
@@ -180,6 +184,16 @@ def tax_zones(address: Address):
         lookup_func = tax_zone_lookup
 
     return lookup_func(address.address)
+
+@app.post("/land_transaction_tax_rate", tags=["land_transaction_tax_rate"])
+def land_transaction_tax_rate(geography_id: str):
+    """
+    Returns land transaction tax rate.
+    """
+    if not re.fullmatch(alphaNumeric, geography_id):
+        raise HTTPException(status_code=400, detail="Alphanumeric input expected")
+
+    return {"land_transaction_tax_rate": land_transaction_tax_rate_query(geography_id)}
 
 
 # @app.post("/sold_price")
