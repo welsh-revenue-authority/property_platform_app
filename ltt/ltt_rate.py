@@ -10,8 +10,7 @@ def land_transaction_tax_rate_query(geography_id: str):
     result = sql_query(
         f"""
         SELECT id, description_en, description_cy, "lower-threshold", "upper-threshold", rate, "land-transaction-tax-category", "geography-id", organisation, "start-date", "end-date"
-	FROM public."land-transaction-tax-rate" WHERE "geography-id"='{geography_id}';
+	FROM public."land-transaction-tax-rate" WHERE "start-date"<CURRENT_DATE AND ("end-date">CURRENT_DATE OR "end-date" is NULL) AND "geography-id"='{geography_id}';
     """
     )
-    result = result[0][0]
     return result
