@@ -11,7 +11,8 @@ from ltt.calculator import calculate_tax, tax_zone_lookup, tax_zone_lookup_polyg
 from ltt.data_object_models import PropertyInfo, PropertyInfoRequest, Uprn, Address
 from ltt.property_info import get_property_info
 from ltt.location_checks import in_wales
-from ltt.ltt_rate import land_transaction_tax_rate_query
+from ltt.ltt_rate import land_transaction_tax_rate_query, land_transaction_tax_category_query
+from ltt.use_class import use_class_part_query, use_class_query
 import fastapi_metadata as docs
 
 
@@ -192,9 +193,28 @@ def land_transaction_tax_rate(geography_id: str):
     """
     if not re.fullmatch(alphaNumeric, geography_id):
         raise HTTPException(status_code=400, detail="Alphanumeric input expected")
-
     return {"land_transaction_tax_rate": land_transaction_tax_rate_query(geography_id)}
 
+@app.post("/land_transaction_tax_rate", tags=["land_transaction_tax_rate"])
+def land_transaction_tax_category():
+    """
+    Returns land transaction tax rate.
+    """
+    return {"land_transaction_tax_category": land_transaction_tax_category_query()}
+
+@app.post("/use_class", tags=["use_class"])
+def use_class():
+    """
+    Returns use class.
+    """
+    return {"use_class": use_class_query()}
+
+@app.post("/use_class_part", tags=["use_class_part"])
+def use_class_part():
+    """
+    Returns use class part.
+    """
+    return {"use_class_part": use_class_part_query()}
 
 # @app.post("/sold_price")
 # def sold_price():
