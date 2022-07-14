@@ -195,10 +195,10 @@ def land_transaction_tax_rate(geography_id: str):
         raise HTTPException(status_code=400, detail="Alphanumeric input expected")
     return {"land_transaction_tax_rate": land_transaction_tax_rate_query(geography_id)}
 
-@app.post("/land_transaction_tax_rate", tags=["land_transaction_tax_rate"])
+@app.post("/land_transaction_tax_category", tags=["land_transaction_tax_category"])
 def land_transaction_tax_category():
     """
-    Returns land transaction tax rate.
+    Returns land transaction tax category.
     """
     return {"land_transaction_tax_category": land_transaction_tax_category_query()}
 
