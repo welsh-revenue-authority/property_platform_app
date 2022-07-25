@@ -27,6 +27,15 @@ def sql_query(query: str):
 
     return result
 
+def sql_query_json(query: str):
+    connection = connect()
+    cursor = connection.cursor()
+    cursor.execute(query)
+    #result = cursor.fetchall()
+    result = [dict((cursor.description[i][0], value) for i, value in enumerate(row)) for row in cursor.fetchall()]
+    connection.close()
+
+    return result
 
 def sql_command(command: str) -> None:
     """Executes command e.g. insert data"""
