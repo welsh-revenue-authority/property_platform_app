@@ -1,10 +1,12 @@
 from typing import Union, List
 import re
+import os
 
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import FastAPI, Request, HTTPException, Depends, status
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, PlainTextResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.security import HTTPBearer
 
 # from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from ltt.calculator import calculate_tax, tax_zone_lookup, tax_zone_lookup_polygon
@@ -16,6 +18,20 @@ from ltt.use_class import use_class_part_query, use_class_query
 from ltt.council_tax import council_tax_band_query, council_tax_rate_query
 import fastapi_metadata as docs
 
+api_keys = [
+    os.environ.get("API_KEY")
+]  # This will be encrypted in the database
+
+oauth2_scheme = HTTPBearer() #OAuth2PasswordBearer(tokenUrl="/token")  # use token authentication
+
+def api_key_auth(api_key: str = Depends(oauth2_scheme)):
+    api_key=api_key.dict()['credentials']
+    print(api_key)
+    if api_key not in api_keys:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Forbidden"
+        )
 
 # App instantiation and setup
 app = FastAPI(
@@ -237,6 +253,15 @@ def council_tax_rate():
     Returns current council tax rates.
     """
     return {"council_tax_rate": council_tax_rate_query()}
+
+@app.get("/protected", dependencies=[Depends(api_key_auth)], tags=["Auth"])
+def add_post() -> dict:
+    """
+    Test your API Key.
+    """
+    return {
+        "data": "You used a valid API key."
+    }
 
 # @app.post("/sold_price")
 # def sold_price():
