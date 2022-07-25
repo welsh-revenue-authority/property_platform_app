@@ -11,8 +11,9 @@ from ltt.calculator import calculate_tax, tax_zone_lookup, tax_zone_lookup_polyg
 from ltt.data_object_models import PropertyInfo, PropertyInfoRequest, Uprn, Address
 from ltt.property_info import get_property_info
 from ltt.location_checks import in_wales
-from ltt.ltt_rate import land_transaction_tax_rate_query, land_transaction_tax_category_query
+from ltt.ltt_rate import land_transaction_tax_rate_query, land_transaction_tax_category_query, land_transaction_tax_threshold_query
 from ltt.use_class import use_class_part_query, use_class_query
+from ltt.council_tax import council_tax_band_query, council_tax_rate_query
 import fastapi_metadata as docs
 
 
@@ -202,6 +203,13 @@ def land_transaction_tax_category():
     """
     return {"land_transaction_tax_category": land_transaction_tax_category_query()}
 
+@app.post("/land_transaction_tax_threshold", tags=["land_transaction_tax_threshold"])
+def land_transaction_tax_threshold():
+    """
+    Returns current land transaction tax thresholds.
+    """
+    return {"land_transaction_tax_threshold": land_transaction_tax_threshold_query()}
+
 @app.post("/use_class", tags=["use_class"])
 def use_class():
     """
@@ -215,6 +223,20 @@ def use_class_part():
     Returns use class part.
     """
     return {"use_class_part": use_class_part_query()}
+
+@app.post("/council_tax_band", tags=["council_tax_band"])
+def council_tax_band():
+    """
+    Returns current council tax bands.
+    """
+    return {"council_tax_band": council_tax_band_query()}
+
+@app.post("/council_tax_rate", tags=["council_tax_rate"])
+def council_tax_rate():
+    """
+    Returns current council tax rates.
+    """
+    return {"council_tax_rate": council_tax_rate_query()}
 
 # @app.post("/sold_price")
 # def sold_price():
