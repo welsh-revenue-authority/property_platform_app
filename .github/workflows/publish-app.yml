@@ -50,6 +50,7 @@ jobs:
           envkey_HEROKU_PGHOST: ${{ secrets.HEROKU_PGHOST }}
           envkey_HEROKU_PGPASSWORD: ${{ secrets.PGPASSWORD }}
           envkey_HEROKU_PGUSERNAME: ${{ secrets.PGUSERNAME }}
+          envkey_API_KEY: ${{ secrets.API_KEY }}
           file_name: .env
           fail_on_empty: true
 
