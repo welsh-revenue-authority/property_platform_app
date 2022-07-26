@@ -5,13 +5,6 @@ from typing import Union
 from ltt.db_connections import sql_query_json
 
 
-def land_transaction_tax_rate_query():
-    """Returns current land transaction tax rates"""
-    result = sql_query_json(
-
-    )
-    return result
-
 def land_transaction_tax_rate_query(geography_id: Union[str, None] = None):
     """Returns current land transaction tax rates for given geography"""
     

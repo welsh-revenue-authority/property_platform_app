@@ -2,6 +2,7 @@ import psycopg2
 import os
 
 from dotenv import load_dotenv
+from psycopg2.extras import execute_values
 
 load_dotenv()
 
@@ -17,6 +18,17 @@ def connect():
     )
     return connection
 
+def sql_bulk_insert(table, columns, data_rows):
+    connection = connect()
+    cursor = connection.cursor()
+    insert_statement = "INSERT INTO {table} ({columns}) VALUES %s".format(table=table, columns=columns)
+    print(insert_statement)
+    execute_values(cursor, insert_statement, data_rows)
+    #for d in data_rows:
+    #    cursor.execute(insert_statement, d)
+
+    connection.commit()
+    connection.close()
 
 def sql_query(query: str):
     connection = connect()

@@ -1,4 +1,5 @@
 from typing import Union, List
+from datetime import datetime
 import re
 import os
 
@@ -8,6 +9,8 @@ from fastapi.responses import HTMLResponse, PlainTextResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.security import HTTPBearer
 from fastapi.middleware.cors import CORSMiddleware
+import fastapi_metadata as docs
+import land_registry.transaction_data
 
 # from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from ltt.calculator import calculate_tax, tax_zone_lookup, tax_zone_lookup_polygon
@@ -17,7 +20,7 @@ from ltt.location_checks import in_wales
 from ltt.ltt_rate import land_transaction_tax_rate_query, land_transaction_tax_category_query, land_transaction_tax_threshold_query
 from ltt.use_class import use_class_part_query, use_class_query
 from ltt.council_tax import council_tax_band_query, council_tax_rate_query
-import fastapi_metadata as docs
+
 
 api_keys = [
     os.environ.get("API_KEY")
@@ -27,7 +30,6 @@ oauth2_scheme = HTTPBearer() #OAuth2PasswordBearer(tokenUrl="/token")  # use tok
 
 def api_key_auth(api_key: str = Depends(oauth2_scheme)):
     api_key=api_key.dict()['credentials']
-    print(api_key)
     if api_key not in api_keys:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -53,7 +55,7 @@ app.add_middleware(
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 # security = HTTPBasic()
-alphaNumeric = re.compile(r'[A-Za-z0-9]+')
+alphaNumeric = re.compile(r'[A-Za-z0-9, ]+')
 
 # Routes
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
@@ -278,6 +280,28 @@ def add_post() -> dict:
     return {
         "data": "You used a valid API key."
     }
+
+@app.get("/load_transaction_data", dependencies=[Depends(api_key_auth)], tags=["Auth"])
+def load_transaction_data(postcode_list) -> dict:
+    """
+    Test your API Key.
+    """
+    if not postcode_list or not re.fullmatch(alphaNumeric, postcode_list):
+        raise HTTPException(status_code=400, detail="Alphanumeric input expected")
+    transaction_started_timestamp = datetime.now()
+    count = land_registry.transaction_data.get_transaction_data(postcode_list)
+    return {
+        "transaction_started_timestamp": transaction_started_timestamp,
+        "postcode": postcode_list,
+        "data": count
+    }
+
+@app.post("/lr_transaction_stats", tags=["lr_transaction_stats"])
+def lr_transaction_stats():
+    """
+    Returns LR transactions stats.
+    """
+    return {"lr_transaction_stats": land_registry.transaction_data.stats_by_postcode_query()}    
 
 # @app.post("/sold_price")
 # def sold_price():
