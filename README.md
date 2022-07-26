@@ -1,6 +1,8 @@
 # Property platform poc
 
-A POC for [a property data platform](https://land-property-platform.herokuapp.com/).
+A POC for [a property data platform](https://landplatform-fastapi-dev.azurewebsites.net/).
+
+And the [platform API documentation](https://landplatform-fastapi-dev.azurewebsites.net/docs).
 
 ## Getting started
 
