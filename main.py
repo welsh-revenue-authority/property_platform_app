@@ -204,10 +204,12 @@ def tax_zones(address: Address):
     return lookup_func(address.address)
 
 @app.post("/land_transaction_tax_rate", tags=["land_transaction_tax_rate"])
-def land_transaction_tax_rate(geography_id: str):
+def land_transaction_tax_rate(geography_id: Union[str, None] = None):
     """
     Returns land transaction tax rate.
     """
+    if not geography_id:
+        return {"land_transaction_tax_rate": land_transaction_tax_rate_query()}
     if not re.fullmatch(alphaNumeric, geography_id):
         raise HTTPException(status_code=400, detail="Alphanumeric input expected")
     return {"land_transaction_tax_rate": land_transaction_tax_rate_query(geography_id)}
@@ -248,11 +250,15 @@ def council_tax_band():
     return {"council_tax_band": council_tax_band_query()}
 
 @app.post("/council_tax_rate", tags=["council_tax_rate"])
-def council_tax_rate():
+def council_tax_rate(geography_id: Union[str, None] = None):
     """
     Returns current council tax rates.
     """
-    return {"council_tax_rate": council_tax_rate_query()}
+    if not geography_id:
+        return {"council_tax_rate": council_tax_rate_query()}
+    if not re.fullmatch(alphaNumeric, geography_id):
+        raise HTTPException(status_code=400, detail="Alphanumeric input expected")
+    return {"council_tax_rate": council_tax_rate_query(geography_id)}
 
 @app.get("/protected", dependencies=[Depends(api_key_auth)], tags=["Auth"])
 def add_post() -> dict:

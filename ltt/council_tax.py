@@ -2,6 +2,7 @@
 For council tax checking functions
 """
 
+from typing import Union
 from ltt.db_connections import sql_query_json
 
 
@@ -15,12 +16,17 @@ def council_tax_band_query():
     )
     return result
     
-def council_tax_rate_query():
+def council_tax_rate_query(geography_id: Union[str, None] = None):
     """Returns current council tax rates"""
-    result = sql_query_json(
-        f"""
+    if(geography_id):
+        q=f"""
+        SELECT *
+	    FROM public.council_tax_rate WHERE "start_date"<CURRENT_DATE AND ("end_date">CURRENT_DATE OR "end_date" is NULL) AND "geography_id"='{geography_id}';
+        """
+    else:
+        q = f"""
         SELECT *
 	    FROM public.council_tax_rate WHERE "start_date"<CURRENT_DATE AND ("end_date">CURRENT_DATE OR "end_date" is NULL);
         """
-    )
+    result = sql_query_json(q)
     return result
