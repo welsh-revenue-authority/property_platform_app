@@ -7,6 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, PlainTextResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.security import HTTPBearer
+from fastapi.middleware.cors import CORSMiddleware
 
 # from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from ltt.calculator import calculate_tax, tax_zone_lookup, tax_zone_lookup_polygon
@@ -40,6 +41,15 @@ app = FastAPI(
     openapi_tags=docs.TAGS_METADATA,
     contact=docs.CONTACT,
 )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 # security = HTTPBasic()
