@@ -33,25 +33,30 @@ def get_transaction_data(postcode_list):
             # an address with the given postcode.
             # The postcode to query is set using SPARQL 1.1's 'values' clause
 
-            SELECT ?paon ?street ?town ?county ?postcode ?amount ?date ?category
+            SELECT ?transaction_id ?property_address ?paon ?saon ?street ?town ?county ?postcode ?amount ?transaction_date ?category ?property_type ?record_status ?estate_type ?new_build
             WHERE
             {
-            {?addr
+            {?property_address
                     text:query ( lrcommon:postcode "(""" + postcode_list + """)" 3000000 ) .
 
-            ?addr lrcommon:postcode ?postcode.
+            ?property_address lrcommon:postcode ?postcode.
 
-            ?transx lrppi:propertyAddress ?addr ;
+            ?transx lrppi:propertyAddress ?property_address ;
+                    lrppi:transactionId     ?transaction_id;
                     lrppi:pricePaid ?amount ;
-                    lrppi:transactionDate ?date ;
+                    lrppi:transactionDate ?transaction_date ;
                     lrppi:transactionCategory/skos:prefLabel ?category.
-            FILTER ( ?date >= "2018-04-01"^^xsd:date )
+            FILTER ( ?transaction_date >= "2018-04-01"^^xsd:date )
             }
-            OPTIONAL {?addr lrcommon:county ?county}
-            OPTIONAL {?addr lrcommon:paon ?paon}
-            OPTIONAL {?addr lrcommon:saon ?saon}
-            OPTIONAL {?addr lrcommon:street ?street}
-            OPTIONAL {?addr lrcommon:town ?town}
+            OPTIONAL {?property_address lrcommon:county ?county}
+            OPTIONAL {?property_address lrcommon:paon ?paon}
+            OPTIONAL {?property_address lrcommon:saon ?saon}
+            OPTIONAL {?property_address lrcommon:street ?street}
+            OPTIONAL {?property_address lrcommon:town ?town}
+            OPTIONAL { ?transx  lrppi:propertyType  ?property_type }
+            OPTIONAL { ?transx  lrppi:recordStatus  ?record_status }
+            OPTIONAL { ?transx  lrppi:estateType  ?estate_type }
+            OPTIONAL { ?transx  lrppi:newBuild  ?new_build }
             }
             ORDER BY ?amount
         """
@@ -61,21 +66,35 @@ def get_transaction_data(postcode_list):
     jsonData = r.json()
     jsonData = json.loads(jsonData['result'])['results']['bindings']
     rows = []
-    cols = ["paon" , "street" , "town" , "county" , "postcode" , "amount" , "date" , "category"]
+    cols = ["transaction_id", "property_address", "paon" , "saon", "street" , "town" , "county" , "postcode" , "amount" , "transaction_date" , "category", "property_type", "record_status", "estate_type", "new_build"]
     for x in jsonData:
         row = []
         for col in cols:
             value = x.get(col)
             if not value:
                 row.append(None)
-            elif(col=="amount"):
-                row.append(int(value.get('value')))
-            else:
-                row.append(str(value.get('value')))
+                continue
+
+            match col:
+                case "amount":
+                    row.append(int(value.get('value')))
+                case "property_address":
+                    row.append(str(value.get('value')).replace("http://landregistry.data.gov.uk/data/ppi/address/",""))
+                case "property_address":
+                    row.append(str(value.get('value')).replace("http://landregistry.data.gov.uk/data/ppi/address/",""))
+                case "property_type":
+                    row.append(str(value.get('value')).replace("http://landregistry.data.gov.uk/def/common/",""))
+                case "record_status":
+                    row.append(str(value.get('value')).replace("http://landregistry.data.gov.uk/def/ppi/",""))
+                case "estate_type":
+                    row.append(str(value.get('value')).replace("http://landregistry.data.gov.uk/def/common/",""))
+                case _:
+                    row.append(str(value.get('value')))
+
         row.append(x.get('postcode').get('value').split()[0])
         rows.append(row)
     #"INSERT into lr_transactions(paon , street, town , county , postcode, amount, transaction_date , category) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-    sql_bulk_insert("lr_transactions", "paon , street, town , county , postcode, amount, transaction_date , category, postcode_area", rows)
+    sql_bulk_insert("lr_transactions", "transaction_id, lr_property_address_id, paon , saon, street, town , county , postcode, amount, transaction_date , category, property_type, record_status, estate_type, new_build, postcode_area", rows)
     return len(jsonData)
 
 def stats_by_postcode_query():
