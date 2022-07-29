@@ -75,21 +75,20 @@ def get_transaction_data(postcode_list):
                 row.append(None)
                 continue
 
-            match col:
-                case "amount":
-                    row.append(int(value.get('value')))
-                case "property_address":
-                    row.append(str(value.get('value')).replace("http://landregistry.data.gov.uk/data/ppi/address/",""))
-                case "property_address":
-                    row.append(str(value.get('value')).replace("http://landregistry.data.gov.uk/data/ppi/address/",""))
-                case "property_type":
-                    row.append(str(value.get('value')).replace("http://landregistry.data.gov.uk/def/common/",""))
-                case "record_status":
-                    row.append(str(value.get('value')).replace("http://landregistry.data.gov.uk/def/ppi/",""))
-                case "estate_type":
-                    row.append(str(value.get('value')).replace("http://landregistry.data.gov.uk/def/common/",""))
-                case _:
-                    row.append(str(value.get('value')))
+            if col=="amount":
+                row.append(int(value.get('value')))
+            elif col=="property_address":
+                row.append(str(value.get('value')).replace("http://landregistry.data.gov.uk/data/ppi/address/",""))
+            elif col=="property_address":
+                row.append(str(value.get('value')).replace("http://landregistry.data.gov.uk/data/ppi/address/",""))
+            elif col=="property_type":
+                row.append(str(value.get('value')).replace("http://landregistry.data.gov.uk/def/common/",""))
+            elif col=="record_status":
+                row.append(str(value.get('value')).replace("http://landregistry.data.gov.uk/def/ppi/",""))
+            elif col=="estate_type":
+                row.append(str(value.get('value')).replace("http://landregistry.data.gov.uk/def/common/",""))
+            else:
+                row.append(str(value.get('value')))
 
         row.append(x.get('postcode').get('value').split()[0])
         rows.append(row)
