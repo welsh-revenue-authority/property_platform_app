@@ -19,9 +19,10 @@ def connect():
     return connection
 
 def sql_bulk_insert(table, columns, data_rows):
+    """Bulk insert into DB. Skips duplicated rows by default."""
     connection = connect()
     cursor = connection.cursor()
-    insert_statement = "INSERT INTO {table} ({columns}) VALUES %s".format(table=table, columns=columns)
+    insert_statement = "INSERT INTO {table} ({columns}) VALUES %s ON CONFLICT DO NOTHING".format(table=table, columns=columns)
     print(insert_statement)
     execute_values(cursor, insert_statement, data_rows)
     #for d in data_rows:
