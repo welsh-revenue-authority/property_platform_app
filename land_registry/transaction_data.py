@@ -2,9 +2,9 @@ import requests
 import json
 
 from typing import Union
-from ltt.db_connections import sql_bulk_insert, sql_query_json
+from ltt.db_connections import sql_insert, sql_insert_bulk, sql_query_json
 
-def get_transaction_data(postcode_list):
+def get_transaction_data(postcode_list, start_date):
     api_url = "https://landregistry.data.gov.uk/app/root/qonsole/query"
 
     headers = {
@@ -46,7 +46,7 @@ def get_transaction_data(postcode_list):
                     lrppi:pricePaid ?amount ;
                     lrppi:transactionDate ?transaction_date ;
                     lrppi:transactionCategory/skos:prefLabel ?category.
-            FILTER ( ?transaction_date >= "2018-04-01"^^xsd:date )
+            FILTER ( ?transaction_date >= \""""+start_date+"""\"^^xsd:date )
             }
             OPTIONAL {?property_address lrcommon:county ?county}
             OPTIONAL {?property_address lrcommon:paon ?paon}
@@ -92,9 +92,13 @@ def get_transaction_data(postcode_list):
 
         row.append(x.get('postcode').get('value').split()[0])
         rows.append(row)
+
     #"INSERT into lr_transactions(paon , street, town , county , postcode, amount, transaction_date , category) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-    sql_bulk_insert("lr_transactions", "transaction_id, lr_property_address_id, paon , saon, street, town , county , postcode, amount, transaction_date , category, property_type, record_status, estate_type, new_build, postcode_area", rows)
+    sql_insert_bulk("lr_transactions", "transaction_id, lr_property_address_id, paon , saon, street, town , county , postcode, amount, transaction_date , category, property_type, record_status, estate_type, new_build, postcode_area", rows)
     return len(jsonData)
+
+def update_collection_log(data_set, start_date, end_date, query_filter_value, results_count, transaction_date):
+    sql_insert("collection_log", "data_set, start_date, end_date, query_filter_value, results_count, transaction_date", [data_set, start_date, end_date, query_filter_value, results_count, transaction_date], "%s, %s, %s, %s, %s, %s")
 
 def stats_by_postcode_query():
     """Returns LR transactions stats"""

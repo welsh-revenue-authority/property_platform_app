@@ -18,12 +18,25 @@ def connect():
     )
     return connection
 
-def sql_bulk_insert(table, columns, data_rows):
+def sql_insert(table, columns, data_rows, values):
+    """Insert into DB."""
+    connection = connect()
+    cursor = connection.cursor()
+
+    insert_statement = "INSERT INTO {table} ({columns}) VALUES ({values})".format(table=table, columns=columns, values=values)
+    print(insert_statement)
+    cursor.execute(insert_statement, data_rows)
+
+    connection.commit()
+    connection.close()
+
+def sql_insert_bulk(table, columns, data_rows):
     """Bulk insert into DB. Skips duplicated rows by default."""
     connection = connect()
     cursor = connection.cursor()
+
     insert_statement = "INSERT INTO {table} ({columns}) VALUES %s ON CONFLICT DO NOTHING".format(table=table, columns=columns)
-    print(insert_statement)
+
     execute_values(cursor, insert_statement, data_rows)
     #for d in data_rows:
     #    cursor.execute(insert_statement, d)

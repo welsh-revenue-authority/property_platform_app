@@ -55,7 +55,8 @@ app.add_middleware(
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 # security = HTTPBasic()
-alphaNumeric = re.compile(r'[A-Za-z0-9, ]+')
+regex_alphanumeric = re.compile(r'[A-Za-z0-9, ]+')
+regex_date = re.compile(r'\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])')
 
 # Routes
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
@@ -222,7 +223,7 @@ def land_transaction_tax_rate(geography_id: Union[str, None] = None):
     """
     if not geography_id:
         return {"land_transaction_tax_rate": land_transaction_tax_rate_query()}
-    if not re.fullmatch(alphaNumeric, geography_id):
+    if not re.fullmatch(regex_alphanumeric, geography_id):
         raise HTTPException(status_code=400, detail="Alphanumeric input expected")
     return {"land_transaction_tax_rate": land_transaction_tax_rate_query(geography_id)}
 
@@ -268,7 +269,7 @@ def council_tax_rate(geography_id: Union[str, None] = None):
     """
     if not geography_id:
         return {"council_tax_rate": council_tax_rate_query()}
-    if not re.fullmatch(alphaNumeric, geography_id):
+    if not re.fullmatch(regex_alphanumeric, geography_id):
         raise HTTPException(status_code=400, detail="Alphanumeric input expected")
     return {"council_tax_rate": council_tax_rate_query(geography_id)}
 
@@ -282,14 +283,17 @@ def add_post() -> dict:
     }
 
 @app.get("/load_transaction_data", dependencies=[Depends(api_key_auth)], tags=["Auth"])
-def load_transaction_data(postcode_list) -> dict:
+def load_transaction_data(postcode_list, start_date="2018-04-01") -> dict:
     """
-    Test your API Key.
+    Load LR transaction data into the platform.
     """
-    if not postcode_list or not re.fullmatch(alphaNumeric, postcode_list):
-        raise HTTPException(status_code=400, detail="Alphanumeric input expected")
+    if not postcode_list or not re.fullmatch(regex_alphanumeric, postcode_list):
+        raise HTTPException(status_code=400, detail="Postcode: alphanumeric input expected")
+    if not start_date or not re.fullmatch(regex_date, start_date):
+        raise HTTPException(status_code=400, detail="start_date: yyyy-mm-dd date expected")
     transaction_started_timestamp = datetime.now()
-    count = land_registry.transaction_data.get_transaction_data(postcode_list)
+    count = land_registry.transaction_data.get_transaction_data(postcode_list, start_date)
+    land_registry.transaction_data.update_collection_log("lr_transactions",start_date,None,postcode_list,count,transaction_started_timestamp)
     return {
         "transaction_started_timestamp": transaction_started_timestamp,
         "postcode": postcode_list,
