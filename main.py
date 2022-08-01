@@ -300,12 +300,23 @@ def load_transaction_data(postcode_list, start_date="2018-04-01") -> dict:
         "data": count
     }
 
-@app.post("/lr_transaction_stats", tags=["lr_transaction_stats"])
-def lr_transaction_stats():
+@app.post("/lr_transaction_stats", tags=["lr_transactions"])
+def lr_transaction_stats(postcode_area: Union[str, None] = None):
     """
-    Returns LR transactions stats.
+    Returns LR transactions stats. Use optional postcode_area parameter to filter by the area
     """
-    return {"lr_transaction_stats": land_registry.transaction_data.stats_by_postcode_query()}    
+    if not postcode_area:
+        return {"lr_transaction_stats": land_registry.transaction_data.stats_by_postcode_query()}  
+    if not re.fullmatch(regex_alphanumeric, postcode_area):
+        raise HTTPException(status_code=400, detail="Alphanumeric input expected")
+    return {"lr_transaction_stats": land_registry.transaction_data.stats_by_postcode_query(postcode_area)}
+
+@app.post("/lr_transaction_postcode_coverage", tags=["lr_transactions"])
+def lr_transaction_postcode_coverage():
+    """
+    Returns LR transactions postcode coverage.
+    """
+    return {"lr_transaction_postcode_coverage": land_registry.transaction_data.postcode_coverage()}  
 
 # @app.post("/sold_price")
 # def sold_price():

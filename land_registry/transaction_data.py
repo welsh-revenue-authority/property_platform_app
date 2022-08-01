@@ -100,11 +100,25 @@ def get_transaction_data(postcode_list, start_date):
 def update_collection_log(data_set, start_date, end_date, query_filter_value, results_count, transaction_date):
     sql_insert("collection_log", "data_set, start_date, end_date, query_filter_value, results_count, transaction_date", [data_set, start_date, end_date, query_filter_value, results_count, transaction_date], "%s, %s, %s, %s, %s, %s")
 
-def stats_by_postcode_query():
+def stats_by_postcode_query(postcode_area: Union[str, None] = None):
     """Returns LR transactions stats"""
+    query=""
+    if(postcode_area):
+        query=f"""
+        SELECT postcode_area, min(amount), max(amount), avg(amount), count(amount) FROM public.lr_transactions WHERE postcode_area='"""+postcode_area+"""' group by postcode_area ORDER BY postcode_area;
+        """
+    else:
+        query=f"""
+        SELECT postcode_area, min(amount), max(amount), avg(amount), count(amount) FROM public.lr_transactions group by postcode_area ORDER BY postcode_area;
+        """
+    result = sql_query_json(query)
+    return result
+
+def postcode_coverage():
+    """Returns LR transactions postcode coverage"""
     result = sql_query_json(
         f"""
-        SELECT postcode_area, min(amount), max(amount), avg(amount), count(amount) FROM public.lr_transactions group by postcode_area;
+        SELECT postcode_area FROM public.lr_transactions group by postcode_area ORDER BY postcode_area;
         """
     )
     return result
