@@ -24,7 +24,6 @@ def sql_insert(table, columns, data_rows, values):
     cursor = connection.cursor()
 
     insert_statement = "INSERT INTO {table} ({columns}) VALUES ({values})".format(table=table, columns=columns, values=values)
-    print(insert_statement)
     cursor.execute(insert_statement, data_rows)
 
     connection.commit()
