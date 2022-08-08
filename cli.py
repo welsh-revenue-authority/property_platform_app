@@ -26,6 +26,7 @@ def transaction_data():
 def postcodes():
     postcode_areas_to_load = []
     for postcode_area in postcode_areas_to_load:
+        # Wildcart (*) may be used, when requesting whole postcode area (CF*)
         load_postcode_boundaries_by_area("C:\\Users\\user\\Downloads\\1\\gb-postcodes-v5\\units\\"+postcode_area+".geojson", postcode_area)
     print("[ DONE ]")
 

@@ -100,17 +100,22 @@ def get_transaction_data(postcode_list, start_date):
 def update_collection_log(data_set, start_date, end_date, query_filter_value, results_count, transaction_date):
     sql_insert("collection_log", "data_set, start_date, end_date, query_filter_value, results_count, transaction_date", [data_set, start_date, end_date, query_filter_value, results_count, transaction_date], "%s, %s, %s, %s, %s, %s")
 
-def stats_by_postcode_query(postcode_area: Union[str, None] = None):
+def stats_by_postcode_query(postcode_area: Union[str, None] = None, start_date: Union[str, None] = None, end_date: Union[str, None] = None):
     """Returns LR transactions stats"""
-    query=""
+    query="""SELECT postcode_area, min(amount), max(amount), avg(amount), count(amount) FROM public.lr_transactions """
+    if(postcode_area or start_date or end_date):
+        query+= "WHERE "
     if(postcode_area):
-        query=f"""
-        SELECT postcode_area, min(amount), max(amount), avg(amount), count(amount) FROM public.lr_transactions WHERE postcode_area='"""+postcode_area+"""' group by postcode_area ORDER BY postcode_area;
-        """
-    else:
-        query=f"""
-        SELECT postcode_area, min(amount), max(amount), avg(amount), count(amount) FROM public.lr_transactions group by postcode_area ORDER BY postcode_area;
-        """
+        query+= f"""postcode_area in ('"""+postcode_area+"""')"""
+        if(start_date or end_date):
+           query+= " AND " 
+    if start_date:
+        query+= "transaction_date>='"+start_date+"'"
+        if end_date:
+            query+= " AND "
+    if end_date:
+        query+= "transaction_date<='"+end_date+"'"
+    query += f""" GROUP BY postcode_area ORDER BY postcode_area;"""
     result = sql_query_json(query)
     return result
 

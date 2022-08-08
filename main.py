@@ -301,15 +301,20 @@ def load_transaction_data(postcode_list, start_date="2018-04-01") -> dict:
     }
 
 @app.post("/lr_transaction_stats", tags=["lr_transactions"])
-def lr_transaction_stats(postcode_area: Union[str, None] = None):
+def lr_transaction_stats(postcode_area: Union[str, None] = None, start_date: str = "2018-04-01", end_date: Union[str, None] = None):
     """
-    Returns LR transactions stats. Use optional postcode_area parameter to filter by the area
+    Returns LR transactions stats. Use optional postcode_area parameter to filter by comma separated postcode areas (don't use spaces). Leave postcode_area empty to get stats for all postcodes.
     """
-    if not postcode_area:
-        return {"lr_transaction_stats": land_registry.transaction_data.stats_by_postcode_query()}  
-    if not re.fullmatch(regex_alphanumeric, postcode_area):
-        raise HTTPException(status_code=400, detail="Alphanumeric input expected")
-    return {"lr_transaction_stats": land_registry.transaction_data.stats_by_postcode_query(postcode_area)}
+    if postcode_area:
+        if not re.fullmatch(regex_alphanumeric, postcode_area):
+            raise HTTPException(status_code=400, detail="Alphanumeric input expected")
+        postcode_area=postcode_area.replace(",","','")
+    if not start_date or not re.fullmatch(regex_date, start_date):
+        raise HTTPException(status_code=400, detail="start_date: yyyy-mm-dd date expected")
+    if end_date and not re.fullmatch(regex_date, end_date):
+        raise HTTPException(status_code=400, detail="end_date: yyyy-mm-dd date expected")
+
+    return {"lr_transaction_stats": land_registry.transaction_data.stats_by_postcode_query(postcode_area, start_date, end_date)}
 
 @app.post("/lr_transaction_postcode_coverage", tags=["lr_transactions"])
 def lr_transaction_postcode_coverage():
