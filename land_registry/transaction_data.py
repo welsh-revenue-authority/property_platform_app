@@ -119,11 +119,17 @@ def stats_by_postcode_query(postcode_area: Union[str, None] = None, start_date: 
     result = sql_query_json(query)
     return result
 
-def postcode_coverage():
-    """Returns LR transactions postcode coverage"""
-    result = sql_query_json(
-        f"""
-        SELECT postcode_area FROM public.lr_transactions group by postcode_area ORDER BY postcode_area;
-        """
-    )
+def postcode_coverage(postcode_valid_from_date: Union[int, None] = None, postcode_valid_to_date: Union[int, None] = None):
+    """Returns LR transactions postcode coverage."""
+    q=f"""SELECT postcode_area FROM public.lr_transactions """
+    if(postcode_valid_from_date or postcode_valid_to_date):
+        q+=f"""INNER JOIN wales_postcode_points_ons_may2022 ON TRIM(REPLACE(postcode,' ',''))=pcd2_clean WHERE """
+    if(postcode_valid_from_date):
+        q+=f"""dointr>="""+str(postcode_valid_from_date)
+        if(postcode_valid_to_date):
+            q+=f"""AND """
+    if(postcode_valid_to_date):
+            q+=f"""doterm<="""+str(postcode_valid_to_date)
+    q+=""" group by postcode_area ORDER BY postcode_area;"""
+    result = sql_query_json(q)
     return result

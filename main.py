@@ -317,11 +317,15 @@ def lr_transaction_stats(postcode_area: Union[str, None] = None, start_date: str
     return {"lr_transaction_stats": land_registry.transaction_data.stats_by_postcode_query(postcode_area, start_date, end_date)}
 
 @app.post("/lr_transaction_postcode_coverage", tags=["lr_transactions"])
-def lr_transaction_postcode_coverage():
+def lr_transaction_postcode_coverage(postcode_valid_from_date: Union[int, None] = None, postcode_valid_to_date: Union[int, None] = None):
     """
-    Returns LR transactions postcode coverage.
+    Returns LR transactions postcode coverage. \n
+    postcode_valid_from_date: integer in yyyymm format (optional) \n
+    postcode_valid_to_date: integer in yyyymm format (optional) 
     """
-    return {"lr_transaction_postcode_coverage": land_registry.transaction_data.postcode_coverage()}  
+    #if postcode_valid_from_date and not re.fullmatch(regex_date, postcode_valid_from_date):
+    #    raise HTTPException(status_code=400, detail="end_date: yyyy-mm-dd date expected")
+    return {"lr_transaction_postcode_coverage": land_registry.transaction_data.postcode_coverage(postcode_valid_from_date, postcode_valid_to_date)}  
 
 # @app.post("/sold_price")
 # def sold_price():
