@@ -52,10 +52,10 @@ def sql_query(query: str):
 
     return result
 
-def sql_query_json(query: str):
+def sql_query_json(query: str, query_parameters: dict = None ):
     connection = connect()
     cursor = connection.cursor()
-    cursor.execute(query)
+    cursor.execute(query, query_parameters)
     #result = cursor.fetchall()
     result = [dict((cursor.description[i][0], value) for i, value in enumerate(row)) for row in cursor.fetchall()]
     connection.close()

@@ -90,11 +90,15 @@ def get_transaction_data(postcode_list, start_date):
             else:
                 row.append(str(value.get('value')))
 
+        # postcode_area
         row.append(x.get('postcode').get('value').split()[0])
+        # postcode_clean
+        row.append(x.get('postcode').get('value').strip().replace(' ',''))
+
         rows.append(row)
 
     #"INSERT into lr_transactions(paon , street, town , county , postcode, amount, transaction_date , category) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-    sql_insert_bulk("lr_transactions", "transaction_id, lr_property_address_id, paon , saon, street, town , county , postcode, amount, transaction_date , category, property_type, record_status, estate_type, new_build, postcode_area", rows)
+    sql_insert_bulk("lr_transactions", "transaction_id, lr_property_address_id, paon , saon, street, town , county , postcode, amount, transaction_date , category, property_type, record_status, estate_type, new_build, postcode_area, postcode_clean", rows)
     return len(jsonData)
 
 def update_collection_log(data_set, start_date, end_date, query_filter_value, results_count, transaction_date):
@@ -106,7 +110,7 @@ def stats_by_postcode_query(postcode_area: Union[str, None] = None, start_date: 
     if(postcode_area or start_date or end_date):
         query+= "WHERE "
     if(postcode_area):
-        query+= f"""postcode_area in ('"""+postcode_area+"""')"""
+        query+= f"""postcode_area IN ('"""+postcode_area+"""')"""
         if(start_date or end_date):
            query+= " AND " 
     if start_date:
@@ -117,6 +121,22 @@ def stats_by_postcode_query(postcode_area: Union[str, None] = None, start_date: 
         query+= "transaction_date<='"+end_date+"'"
     query += f""" GROUP BY postcode_area ORDER BY postcode_area;"""
     result = sql_query_json(query)
+    return result
+
+def stats_by_custom_area_query(geometry_string: str, start_date: Union[str, None] = None, end_date: Union[str, None] = None):
+    """LR transactions stats for the custom area"""
+    query="""SELECT min(amount), max(amount), avg(amount), count(amount) FROM public.lr_transactions INNER JOIN wales_postcode_points_ons_may2022 ON postcode_clean=pcd2_clean """
+    query+= "WHERE "
+    query+= f"""ST_Intersects( ST_SetSRID(geom,4326), ST_SetSRID(ST_GeomFromGeoJSON(%(geometry_string)s),4326) )"""
+    if(start_date or end_date):
+        query+= " AND " 
+    if start_date:
+        query+= "transaction_date>='"+start_date+"'"
+        if end_date:
+            query+= " AND "
+    if end_date:
+        query+= "transaction_date<='"+end_date+"'"
+    result = sql_query_json(query, {"geometry_string": geometry_string})
     return result
 
 def postcode_coverage(postcode_valid_from_date: Union[int, None] = None, postcode_valid_to_date: Union[int, None] = None):

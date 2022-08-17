@@ -273,8 +273,8 @@ def council_tax_rate(geography_id: Union[str, None] = None):
         raise HTTPException(status_code=400, detail="Alphanumeric input expected")
     return {"council_tax_rate": council_tax_rate_query(geography_id)}
 
-@app.get("/protected", dependencies=[Depends(api_key_auth)], tags=["Auth"])
-def add_post() -> dict:
+@app.get("/test_api_key", dependencies=[Depends(api_key_auth)], tags=["Auth"])
+def test_api_key() -> dict:
     """
     Test your API Key.
     """
@@ -303,7 +303,10 @@ def load_transaction_data(postcode_list, start_date="2018-04-01") -> dict:
 @app.post("/lr_transaction_stats", tags=["lr_transactions"])
 def lr_transaction_stats(postcode_area: Union[str, None] = None, start_date: str = "2018-04-01", end_date: Union[str, None] = None):
     """
-    Returns LR transactions stats. Use optional postcode_area parameter to filter by comma separated postcode areas (don't use spaces). Leave postcode_area empty to get stats for all postcodes.
+    LR transactions stats \n
+    start_date: starting date in yyyy-mm-dd format (optional) \n
+    end_date: ending date in yyyy-mm-dd format \n
+    postcode_area (optional): filter by comma separated postcode areas (don't use spaces). Leave postcode_area empty to get stats for all postcodes.
     """
     if postcode_area:
         if not re.fullmatch(regex_alphanumeric, postcode_area):
@@ -315,6 +318,21 @@ def lr_transaction_stats(postcode_area: Union[str, None] = None, start_date: str
         raise HTTPException(status_code=400, detail="end_date: yyyy-mm-dd date expected")
 
     return {"lr_transaction_stats": land_registry.transaction_data.stats_by_postcode_query(postcode_area, start_date, end_date)}
+
+@app.post("/lr_transaction_stats_custom_area", tags=["lr_transactions"])
+def lr_transaction_stats(geometry_string: str, start_date: str = "2018-04-01", end_date: Union[str, None] = None):
+    """
+    LR transactions stats \n
+    start_date: starting date in yyyy-mm-dd format (optional) \n
+    end_date: ending date in yyyy-mm-dd format \n
+    geometry_string: custom area in geoJSON format - polygon coordinates
+    """
+    if not start_date or not re.fullmatch(regex_date, start_date):
+        raise HTTPException(status_code=400, detail="start_date: yyyy-mm-dd date expected")
+    if end_date and not re.fullmatch(regex_date, end_date):
+        raise HTTPException(status_code=400, detail="end_date: yyyy-mm-dd date expected")
+
+    return {"lr_transaction_stats": land_registry.transaction_data.stats_by_custom_area_query(geometry_string, start_date, end_date)}
 
 @app.post("/lr_transaction_postcode_coverage", tags=["lr_transactions"])
 def lr_transaction_postcode_coverage(postcode_valid_from_date: Union[int, None] = None, postcode_valid_to_date: Union[int, None] = None):
