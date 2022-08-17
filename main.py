@@ -320,13 +320,14 @@ def lr_transaction_stats(postcode_area: Union[str, None] = None, start_date: str
     return {"lr_transaction_stats": land_registry.transaction_data.stats_by_postcode_query(postcode_area, start_date, end_date)}
 
 @app.post("/lr_transaction_stats_custom_area", tags=["lr_transactions"])
-def lr_transaction_stats(geometry_string: str, start_date: str = "2018-04-01", end_date: Union[str, None] = None):
+def lr_transaction_stats_custom_area(geometry_string: str, start_date: str = "2018-04-01", end_date: Union[str, None] = None):
     """
     LR transactions stats \n
     start_date: starting date in yyyy-mm-dd format (optional) \n
     end_date: ending date in yyyy-mm-dd format \n
     geometry_string: custom area in geoJSON format - polygon coordinates
     """
+    # { "type": "Polygon", "coordinates": [ [ [ -3.644105790164972, 51.784366908033675 ], [ -3.20124639660477, 51.788184661426442 ], [ -3.189793136426489, 51.284241213582071 ], [ -3.590657242666327, 51.28805896697483 ], [ -3.644105790164972, 51.784366908033675 ] ] ] } 
     if not start_date or not re.fullmatch(regex_date, start_date):
         raise HTTPException(status_code=400, detail="start_date: yyyy-mm-dd date expected")
     if end_date and not re.fullmatch(regex_date, end_date):
