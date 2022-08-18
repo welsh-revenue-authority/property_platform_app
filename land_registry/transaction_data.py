@@ -143,13 +143,13 @@ def postcode_coverage(postcode_valid_from_date: Union[int, None] = None, postcod
     """Returns LR transactions postcode coverage."""
     q=f"""SELECT postcode_area FROM public.lr_transactions """
     if(postcode_valid_from_date or postcode_valid_to_date):
-        q+=f"""INNER JOIN wales_postcode_points_ons_may2022 ON TRIM(REPLACE(postcode,' ',''))=pcd2_clean WHERE """
+        q+=f"""INNER JOIN wales_postcode_points_ons_may2022 ON postcode_clean=pcd2_clean WHERE """
     if(postcode_valid_from_date):
-        q+=f"""dointr>="""+str(postcode_valid_from_date)
+        q+=f"""(doterm is null OR doterm >="""+str(postcode_valid_from_date)+""")"""
         if(postcode_valid_to_date):
             q+=f"""AND """
     if(postcode_valid_to_date):
-            q+=f"""doterm<="""+str(postcode_valid_to_date)
+            q+=f"""dointr<="""+str(postcode_valid_to_date)+""" AND doterm<="""+str(postcode_valid_to_date)
     q+=""" group by postcode_area ORDER BY postcode_area;"""
     result = sql_query_json(q)
     return result

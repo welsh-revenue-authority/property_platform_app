@@ -338,7 +338,7 @@ def lr_transaction_stats_custom_area(geometry_string: str, start_date: str = "20
 @app.post("/lr_transaction_postcode_coverage", tags=["lr_transactions"])
 def lr_transaction_postcode_coverage(postcode_valid_from_date: Union[int, None] = None, postcode_valid_to_date: Union[int, None] = None):
     """
-    Returns LR transactions postcode coverage. \n
+    Returns LR transactions postcode coverage, optionally limited by range when postcode needs to be valid - use current month as a postcode_valid_from_date to get currently valid postcodes only. \n
     postcode_valid_from_date: integer in yyyymm format (optional) \n
     postcode_valid_to_date: integer in yyyymm format (optional) 
     """
