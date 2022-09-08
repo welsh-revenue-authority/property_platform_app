@@ -39,3 +39,7 @@ make run
 
 Read the documentation [here](https://welsh-revenue-authority.github.io/property_platform_app/)
 
+## Command line tools
+
+There are bulk data load scripts in `cli.py`. They are intended to be run on developer's machine or a VM.
+
